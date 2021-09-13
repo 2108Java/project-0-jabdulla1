@@ -1,40 +1,51 @@
 package com.revature.view;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 import com.revature.model.BankCustomer;
+import com.revature.model.BankEmployee;
+import com.revature.model.CustomerAccount;
+import com.revature.model.User;
 import com.revature.service.BankService;
 
 public class ConsoleBankAppImp implements UIBankApp {
 
 	private BankService service;
 	
-	int logggedIn =0;
+	BankCustomer customerLoggedIn = null;
+	BankEmployee employeeLoggedIn = null;
+	
+	int loggedIn =0;
 	
 	
 	public ConsoleBankAppImp(BankService bankService){
 		this.service= bankService;
 	}
 	
-	/*
-	private void printArray(ToDo[] ToDoArray) {
+	
+	private void printArray(CustomerAccount[] customerAccounts) {
 		
-		for(int x =0; x< ToDoArray.length; x++) {
+		for(int x =0; x< customerAccounts.length; x++) {
 			
-			if(ToDoArray[x] != null) {
-				System.out.println("Id: "+ ToDoArray[x].getId());
+			
+			if(customerAccounts[x] != null) {
+				System.out.println(customerAccounts[x].toString());
+				
+				/*System.out.println("Id: "+ ToDoArray[x].getId());
 				System.out.println("Title: "+ ToDoArray[x].getTitle());
 				System.out.println("Description:"+ ToDoArray[x].getDescription());
 				System.out.println("Complete: "+ ToDoArray[x].isComplete());
-				System.out.println("");
+				System.out.println("");*/
 			}
 		}
 		
 	}
-	*/
+	
 	
 	private void DisplayLoginPage() {
-		System.out.println("Welcom To Bank App");
+		System.out.println("Welcome To Bank App");
 		System.out.println("Please Login");
 		System.out.println("1) Customer Login");
 		System.out.println("2) Employee Login");
@@ -43,23 +54,160 @@ public class ConsoleBankAppImp implements UIBankApp {
 		System.out.println("5) Exit");
 	}
 	
-	private void DisplayCustomerPage() {
-		System.out.println("Welcom To Bank App");
-		
-		System.out.println("View All Accounts");
+	private void DisplayCustomerPage(Scanner sc) {
 		
 		
-		System.out.println("1) Make a Deposit");
 		
-		System.out.println("2) Make a Withdrawal");
+		boolean running = true;
 		
-		System.out.println("3) View Balance");
 		
-		System.out.println("4) Apply for a new Account");
-		
-		System.out.println("5) Post a money transfer to another account");
-		System.out.println("6) Accept a money transfer from another account");
-		System.out.println("7) Exit");
+		while(running) {
+			
+			
+			System.out.println("Welcome "+ customerLoggedIn.getFirstName() +" "+ customerLoggedIn.getLastName()+" To Bank App");
+			
+			System.out.println("View All Accounts");
+			CustomerAccount[] customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
+				
+			printArray(customerAccounts);
+			
+			
+			System.out.println("1) Make a Deposit");
+			
+			
+			System.out.println("2) Make a Withdrawal");
+			
+			System.out.println("3) View Balance");
+			
+			System.out.println("4) Apply for a new Account");
+			
+			System.out.println("5) Post a money transfer to another account");
+			System.out.println("6) Accept a money transfer from another account");
+			System.out.println("7) Exit");
+			
+			
+			
+			int accountNumber=0;
+			double amount=0;
+			String input = sc.nextLine();
+			
+			switch(input) {
+			case "1":
+				System.out.println("Enter Account Number: ");
+				accountNumber = Integer.parseInt(sc.nextLine());
+				
+				System.out.println("Enter Amount: ");
+				amount = Double.parseDouble(sc.nextLine());
+				
+				int x;
+				for( x = 0; x< customerAccounts.length; x++) {//change for error cheacking 
+					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == accountNumber)&&(customerAccounts[x].isIsapproved() == false)) {
+						
+						amount += customerAccounts[x].getBalance();
+						
+						this.service.MakeDeposit(amount, accountNumber);
+						break;
+					}
+				}
+				
+				//this.service.MakeDeposit(customerAccounts, amount, accountNumber);
+				
+				break;
+				
+			case "2":
+				
+				System.out.println("Enter Account Number: ");
+				accountNumber = Integer.parseInt(sc.nextLine());
+				
+				System.out.println("Enter Amount: ");
+				amount = Double.parseDouble(sc.nextLine());
+				
+				//x =0;
+				for( x = 0; x< customerAccounts.length; x++) {//change for error cheacking 
+					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == accountNumber)&&(customerAccounts[x].isIsapproved() == false)) {
+						
+						amount -= customerAccounts[x].getBalance();
+						
+						this.service.MakeWithdrawal(accountNumber, amount);
+						break;
+					}
+				}
+				
+				
+				break;
+				
+			case "3":
+				
+				System.out.println("See Accounts");
+				//CustomerAccount[] SeecustomerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
+				
+				//printArray(SeecustomerAccounts);
+				
+				break;
+				
+			case "4":
+				
+				System.out.println("Enter Account Type: ");
+				System.out.println("1) Checking: ");
+				System.out.println("2) Saving: ");
+				int AccountType = Integer.parseInt(sc.nextLine());
+				
+				String accountType;
+				if(AccountType == 1) {
+					accountType = "Checking";
+				}
+				else {
+					accountType = "Saving";
+				}
+				
+			
+				/*
+				 * CustomerAccount(int id, int accountNumber, String typeOfAccount, double balance, boolean isapproved,
+			int foreign_customer_key)
+	
+				*/
+				
+				//this.service.MakeNewCustomerAccount(new CustomerAccount(0,0, accountType, 1000.00, false, this.customerLoggedIn.getCustomerNumber() ));
+				
+								
+				break;
+				
+			case "5":
+				
+				System.out.println("Enter Start Account Number: ");
+				int startAccountNumber = Integer.parseInt(sc.nextLine());
+				
+				System.out.println("Enter End Account Number: ");
+				int endAccountNumber = Integer.parseInt(sc.nextLine());
+				
+				System.out.println("Enter Amount to Transfer: ");
+				int transferAmount = Integer.parseInt(sc.nextLine());
+				boolean isAccepted = false;
+				int TaccountNumber = new Random().nextInt(100000);
+				//AccountTransfer accountTransfer = new AccountTransfer(0,TaccountNumber startAccountNumber, endAccountNumber, transferAmount, this.customerLoggedIn.getCustomerNumber(), isAccepted);
+				
+				break;
+				
+			case "6":
+				
+				//AccountTransfer[] AccountTransferisAccepted = this.service.getAllCustomerAccountTransfers(this.customerLoggedIn.getCustomerNumber());
+				//print(AccountTransfer);
+				System.out.println("Which ones do you want to excepted: ");
+				int transferAccountNumber = Integer.parseInt(sc.nextLine());
+				
+				//this.service.AcceptMoneyTransfer(transferAccountNumber, this.customerLoggedIn.getCustomerNumber());
+				
+			case "7":
+				running = false;
+				break;
+				
+				default:
+					System.out.print("Not Vaild");
+			
+			}
+			
+		}
+	
 	}
 	
 	/*
@@ -98,25 +246,32 @@ public class ConsoleBankAppImp implements UIBankApp {
 	private void DisplayCreateAccount(Scanner sc) {
 		
 		
-		System.out.println("Welcome To Bank App Create Account Page");
-		System.out.println("1) Create Customer Account");
-		System.out.println("2) Create Employee Account");
-		System.out.println("3) Create Admin Account");
-		System.out.println("4) Exit");
+		
 
 		
-		String input = sc.nextLine();
+	
 		boolean running = true;
 
 		while(running) {
+			
+			System.out.println("Welcome To Bank App Create Account Page");
+			System.out.println("1) Create Customer Account");
+			System.out.println("2) Create Employee Account");
+			System.out.println("3) Create Admin Account");
+			System.out.println("4) Exit");
+			
+			String input = sc.nextLine();
+			
 			switch(input) {
 
 			case "1":
 				BankCustomer bankcustomer = DisplayCreateCustormerAccount(sc);
 
 				this.service.MakeCustomerAccount(bankcustomer);						
-
+				running = false;
 				break;
+			case "2":
+				BankEmployee employee = DisplayCreateEmployeeAccount(sc);
 				
 			case "4":
 				System.out.println("Ok");
@@ -145,22 +300,33 @@ public class ConsoleBankAppImp implements UIBankApp {
 		System.out.println("Enter Last Name: ");
 		String LastName = sc.nextLine();
 		
-		BankCustomer bankCustomer = new BankCustomer(userName, password, firstName, LastName);
+		BankCustomer bankCustomer = new BankCustomer(userName, password, new Random().nextInt(100000), firstName, LastName);
 		
-		
+		//this.service.MakeCustomerAccount(bankCustomer);
 		//System.out.println("4) Exit");
 
 		return bankCustomer;
 	}
 	
-	private void DisplayCreateEmployeeAccount() {
-		System.out.println("Welcome To Bank App Create Employee Account Page");
+	private BankEmployee DisplayCreateEmployeeAccount(Scanner sc) {
+
 		System.out.println("Enter A User Name: ");
+		String userName = sc.nextLine();
 		
 		System.out.println("Enter A Password: ");
+		String password = sc.nextLine();
 		
-		System.out.println("4) Exit");
+		System.out.println("Enter First Name: ");
+		String firstName = sc.nextLine();
+		System.out.println("Enter Last Name: ");
+		String LastName = sc.nextLine();
+		
+		BankEmployee bankEmployee = new BankEmployee(userName, password, firstName, LastName);
+		
+		
+		//System.out.println("4) Exit");
 
+		return bankEmployee;
 		
 	}
 
@@ -174,14 +340,23 @@ public class ConsoleBankAppImp implements UIBankApp {
 
 		
 	}
-	private void DisplayEmployeeLoginPage() {
+	private int DisplayEmployeeLoginPage(Scanner sc) {
 		System.out.println("Welcome To Employee Login Bank App Page");
 		System.out.println("Please Login");
+		
 		System.out.println("Enter Employee User Name: ");
+		String userName = sc.nextLine();
+		
 		
 		System.out.println("Enter Employee User Password: ");
+		String password = sc.nextLine();
 		
-		System.out.println("5) Exit");
+		User user = new User(userName, password);
+		
+		//this.loggedIn = service.loginEmployee(user);
+		
+		//System.out.println("5) Exit");
+		return this.loggedIn;
 	}
 
 	
@@ -196,14 +371,36 @@ public class ConsoleBankAppImp implements UIBankApp {
 		System.out.println("5) Exit");
 	}
 
-	private void DisplayCustomerLoginPage() {
+	private int DisplayCustomerLoginPage(Scanner sc) {
 		System.out.println("Welcome To Customer Login Bank App Page");
 		System.out.println("Please Login");
+		
 		System.out.println("Enter Customer User Name: ");
+		String userName = sc.nextLine();
 		
 		System.out.println("Enter Coustmer User Password: ");
+		String password = sc.nextLine();
 		
-		System.out.println("5) Exit");
+		//this.customerLoggedIn = new BankCustomer(userName, password);
+		
+		User user = new User(userName, password);
+		
+		//this.loggedIn = service.loginCustomer(user, this.customerLoggedIn);
+		
+		this.customerLoggedIn = service.loginCustomer(user);
+		this.loggedIn = 1;
+		
+		if(this.loggedIn == 1) {
+			
+			System.out.println(" You are logged in");
+		}
+		else {
+			System.out.println(" You are not logged in");
+		}
+		
+		//System.out.println("5) Exit");
+		
+		return this.loggedIn;
 	}
 
 	
@@ -213,8 +410,20 @@ public class ConsoleBankAppImp implements UIBankApp {
 
 		// TODO Auto-generated method stub
 		
+		/*
+		 * System.out.println("Welcom To Bank App");
+		System.out.println("Please Login");
+		System.out.println("1) Customer Login");
+		System.out.println("2) Employee Login");
+		System.out.println("3) Admin Login");
+		System.out.println("4) Create Account");
+		System.out.println("5) Exit");
+		*/
+		
 				boolean running = true;
 				Scanner sc = new Scanner(System.in);
+				//BankCustomer customerLoggedIn = null;
+				//BankEmployee employeeLoggedIn = null;
 				
 				while(running) {
 					
@@ -225,6 +434,26 @@ public class ConsoleBankAppImp implements UIBankApp {
 					
 					switch(input) {
 					
+					case "1":
+						
+						this.loggedIn =1;
+						
+						this.loggedIn = DisplayCustomerLoginPage(sc);
+						
+						if(this.loggedIn == 1) {
+							//System.out.println("loggedIn cusomer: "+ this.customerLoggedIn.toString());
+							this.DisplayCustomerPage(sc);
+						}
+						else {
+							System.out.println("must log in as a Customer");
+						}
+						
+						break;
+						
+					case "2":
+						DisplayEmployeeLoginPage(sc);
+						
+						break;
 					
 					case "4":
 						

@@ -1,7 +1,9 @@
 package com.revature.model;
 
 public class User {
-
+	private int id;
+	
+	
 	private String userName;
 	private String password;
 	
@@ -20,6 +22,15 @@ public class User {
 	}
 
 
+	public int getId() {
+		return id;
+	}
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getUserName() {
 		return userName;
