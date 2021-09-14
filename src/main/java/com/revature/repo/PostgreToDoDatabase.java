@@ -179,4 +179,56 @@ public class PostgreToDoDatabase implements BankDatabase {
 		
 	}
 
+
+	@Override
+	public void insertCustomerAccount(CustomerAccount customerAccount, int customerNumber) {
+		// TODO Auto-generated method stub
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+
+
+			/*
+						String sql = "INSERT INTO customerLogin (customer_userName, customer_userPassword, customer_number, customer_firstName, customer_lastName) "
+								+ "values (?, ?, ?, ?, ?);";
+						PreparedStatement ps = con.prepareStatement(sql);
+
+						ps.setString(1, bankcustomer.getUserName());
+						ps.setString(2, bankcustomer.getPassword());
+						ps.setInt(3, bankcustomer.getCustomerNumber());
+						ps.setString(4, bankcustomer.getFirstName());
+						ps.setString(5, bankcustomer.getLastName());
+
+
+						ps.execute();
+
+			 */
+			/*
+			 * insert into customerAccount(customer_account_accountNumber, customer_account_typeOfAccount, customer_account_balance,
+	foreign_customerLogin_key, customer_account_isapproved)values 
+(2043069, 'CHECKING', 12361.50, (select customer_id from customerLogin where customer_number = 1234), false);
+			*/
+
+			String sql = "INSERT INTO customerAccount(customer_account_accountNumber, customer_account_typeOfAccount, customer_account_balance, "
+					+ "foreign_customerLogin_key, customer_account_isapproved) VALUES "
+					+ "(?, ?, ?, (SELECT customer_id FROM customerLogin WHERE customer_number = ?), ?);";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			
+			ps.setInt(1, customerAccount.getAccountNumber());
+			ps.setString(2, customerAccount.getTypeOfAccount());
+			ps.setDouble(3, customerAccount.getBalance());
+			ps.setInt(4, customerNumber);
+			ps.setBoolean(5, customerAccount.isIsapproved());
+			
+			ps.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+
+	
+
 }

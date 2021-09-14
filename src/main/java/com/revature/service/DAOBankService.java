@@ -54,5 +54,12 @@ public class DAOBankService implements BankService {
 		this.bankDatabase.updateCustomerAccount(amount, accountNumber);
 	}
 
+	@Override
+	public void MakeNewCustomerAccount(CustomerAccount customerAccount, int customerNumber) {
+		// TODO Auto-generated method stub
+		this.bankDatabase.insertCustomerAccount(customerAccount, customerNumber);
+	}
+
+
 	
 }

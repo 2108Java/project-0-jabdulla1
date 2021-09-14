@@ -20,4 +20,6 @@ public interface BankDatabase {
 
 	void updateCustomerAccount(double amount, int accountNumber);
 
+	void insertCustomerAccount(CustomerAccount customerAccount, int customerNumber);
+
 }

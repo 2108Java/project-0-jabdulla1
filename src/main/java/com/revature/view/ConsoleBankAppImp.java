@@ -60,8 +60,8 @@ public class ConsoleBankAppImp implements UIBankApp {
 		
 		boolean running = true;
 		
-		
 		while(running) {
+			
 			
 			
 			System.out.println("Welcome "+ customerLoggedIn.getFirstName() +" "+ customerLoggedIn.getLastName()+" To Bank App");
@@ -83,7 +83,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 			
 			System.out.println("5) Post a money transfer to another account");
 			System.out.println("6) Accept a money transfer from another account");
-			System.out.println("7) Exit");
+			System.out.println("7) Logout");
 			
 			
 			
@@ -154,12 +154,15 @@ public class ConsoleBankAppImp implements UIBankApp {
 				
 				String accountType;
 				if(AccountType == 1) {
-					accountType = "Checking";
+					accountType = "CHECKING";
 				}
 				else {
-					accountType = "Saving";
+					accountType = "SAVING";
 				}
 				
+				System.out.println("Enter Amount: ");
+				double createAmount = Double.parseDouble(sc.nextLine());
+
 			
 				/*
 				 * CustomerAccount(int id, int accountNumber, String typeOfAccount, double balance, boolean isapproved,
@@ -167,7 +170,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 	
 				*/
 				
-				//this.service.MakeNewCustomerAccount(new CustomerAccount(0,0, accountType, 1000.00, false, this.customerLoggedIn.getCustomerNumber() ));
+				this.service.MakeNewCustomerAccount(new CustomerAccount(new Random().nextInt(100000), accountType, createAmount,0 , false ),  this.customerLoggedIn.getCustomerNumber());
 				
 								
 				break;
@@ -184,6 +187,8 @@ public class ConsoleBankAppImp implements UIBankApp {
 				int transferAmount = Integer.parseInt(sc.nextLine());
 				boolean isAccepted = false;
 				int TaccountNumber = new Random().nextInt(100000);
+				
+				//lsit all of coustomer acconts and update the coustoer account
 				//AccountTransfer accountTransfer = new AccountTransfer(0,TaccountNumber startAccountNumber, endAccountNumber, transferAmount, this.customerLoggedIn.getCustomerNumber(), isAccepted);
 				
 				break;
@@ -192,13 +197,16 @@ public class ConsoleBankAppImp implements UIBankApp {
 				
 				//AccountTransfer[] AccountTransferisAccepted = this.service.getAllCustomerAccountTransfers(this.customerLoggedIn.getCustomerNumber());
 				//print(AccountTransfer);
-				System.out.println("Which ones do you want to excepted: ");
+				System.out.println("Which one do you want to excepted: ");
 				int transferAccountNumber = Integer.parseInt(sc.nextLine());
 				
 				//this.service.AcceptMoneyTransfer(transferAccountNumber, this.customerLoggedIn.getCustomerNumber());
 				
 			case "7":
+				this.customerLoggedIn = null;
+				this.loggedIn =0;
 				running = false;
+				
 				break;
 				
 				default:

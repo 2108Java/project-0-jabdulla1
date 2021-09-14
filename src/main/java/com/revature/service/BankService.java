@@ -32,4 +32,10 @@ public interface BankService {
 
 	void MakeWithdrawal(int accountNumber, double amount);
 
+
+	void MakeNewCustomerAccount(CustomerAccount customerAccount, int customerNumber);
+
+
+
+
 }
