@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.revature.model.BankCustomer;
+import com.revature.model.BankEmployee;
 import com.revature.model.CustomerAccount;
 import com.revature.model.User;
 
@@ -226,6 +227,85 @@ public class PostgreToDoDatabase implements BankDatabase {
 			e.printStackTrace();
 		}
 
+	}
+
+
+	@Override
+	public BankEmployee selectEmployeeUser(User user) {
+		// TODO Auto-generated method stub
+		
+		BankEmployee employeeLoggedIn =null;
+		int loggedIn= 0;
+		
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+
+			String sql ="SELECT * FROM employeeLogin WHERE employee_userName = ? AND employee_userPassword = ?;";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+//			ps.setString(1, add.getTitle());
+			
+			ps.setString(1, user.getUserName());
+			ps.setString(2, user.getPassword());
+			
+			ResultSet rs = ps.executeQuery();
+			
+			rs.next();
+			
+//			BankCustomer(int id, String userName, String password, int customerNumber, String firstName, String lastName) {
+			
+			if(rs != null) {
+				employeeLoggedIn= new BankEmployee(rs.getInt("employee_id"), rs.getString("employee_userName"), rs.getString("employee_userPassword"),
+						rs.getInt("employee_number"), rs.getString("employee_firstName"), rs.getString("employee_lastName"));
+				loggedIn = 2;
+				
+				//System.out.println("customerLoggedIn: "+ customerLoggedIn.toString());
+				//rs.next();
+				
+			}
+			
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//System.out.println("customerLoggedIn: "+ customerLoggedIn.toString());
+
+		return employeeLoggedIn;
+	}
+
+
+	@Override
+	public void insertEmployee(BankEmployee bankemployee) {
+		// TODO Auto-generated method stub
+		
+
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+
+///			String sql ="insert into customerLogin (customer_userName, customer_userPassword, customer_number, customer_firstName, customer_lastName) values \r\n"
+	//				+ "	('jabdulla', 'jabdulla', 1234, 'jihad', 'abdul-latif');";
+			
+			
+			String sql = "INSERT INTO employeeLogin (employee_userName, employee_userPassword, employee_number, employee_firstName, employee_lastName) "
+					+ "values (?, ?, ?, ?, ?);";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, bankemployee.getUserName());
+			ps.setString(2, bankemployee.getPassword());
+			ps.setInt(3, bankemployee.getEmployeeNumber());
+			ps.setString(4, bankemployee.getFirstName());
+			ps.setString(5, bankemployee.getLastName());
+			
+			
+			ps.execute();
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 

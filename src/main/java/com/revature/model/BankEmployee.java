@@ -1,7 +1,24 @@
 package com.revature.model;
 
+import java.util.Random;
+
 public class BankEmployee extends User{
 	private int id;
+	
+	private int employeeNumber;
+	
+	
+	
+	public int getEmployeeNumber() {
+		return employeeNumber;
+	}
+
+
+	public void setEmployeeNumber(int employeeNumber) {
+		this.employeeNumber = employeeNumber;
+	}
+
+
 	public int getId() {
 		return id;
 	}
@@ -16,10 +33,30 @@ public class BankEmployee extends User{
 	private String lastName;
 	
 	
-	public BankEmployee(String userName, String password, String firstname, String lastname) {
+	public BankEmployee(int id, String userName, String password, String firstname, int employeeNumber, String lastname) {
 		super(userName, password);
 		// TODO Auto-generated constructor stub
-		
+		this.id= id;
+		this.employeeNumber= employeeNumber;
+		this.firstName= firstname;
+		this.lastName = lastname;
+	}
+
+	
+	public BankEmployee(String userName, String password, int employeeNumber ,String firstname, String lastname) {
+		super(userName, password);
+		// TODO Auto-generated constructor stub
+		this.employeeNumber= employeeNumber;
+		this.firstName= firstname;
+		this.lastName = lastname;
+	}
+
+
+	public BankEmployee(int id, String userName, String password, int employeeNumber, String firstname, String lastname) {
+		super(userName, password);
+		// TODO Auto-generated constructor stub
+		this.id= id;
+		this.employeeNumber= employeeNumber;
 		this.firstName= firstname;
 		this.lastName = lastname;
 	}

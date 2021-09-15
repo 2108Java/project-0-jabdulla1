@@ -64,7 +64,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 			
 			
 			
-			System.out.println("Welcome "+ customerLoggedIn.getFirstName() +" "+ customerLoggedIn.getLastName()+" To Bank App");
+			System.out.println("Welcome "+ customerLoggedIn.getFirstName() +" "+ customerLoggedIn.getLastName()+" To Bank App Customer Page");
 			
 			System.out.println("View All Accounts");
 			CustomerAccount[] customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
@@ -240,22 +240,54 @@ public class ConsoleBankAppImp implements UIBankApp {
 	}
 	*/
 	
-	private void DisplayEmployeePage() {
-		System.out.println("Welcome To Bank App Create Account Page");
-		System.out.println("1) View a log of all transactions");
+	private void DisplayEmployeePage(Scanner sc) {
 		
-		System.out.println("2) Approve or reject an account registration by a user");
+
 		
-		System.out.println("3) View account balances");
+		boolean running = true;
 		
-		System.out.println("4) Exit");
+		while(running) {
+			
+			System.out.println("Welcome "+this.employeeLoggedIn.getFirstName()+" "+this.employeeLoggedIn.getLastName()+" To Bank App Employee Page");
+			System.out.println("1) View a log of all transactions");
+			
+			System.out.println("2) Approve or reject an account registration by a user");
+			
+			System.out.println("3) View account balances");
+			
+			System.out.println("4) Logout");
+			
+			int accountNumber=0;
+			double amount=0;
+			String input = sc.nextLine();
+			
+			switch(input) {
+			
+			case "1":
+				break;
+			case "2":
+				break;
+			case "3":
+				break;
+			
+			case "4":
+				this.employeeLoggedIn = null;
+				this.loggedIn =0;
+				running = false;
+				
+				break;
+				
+				default:
+					System.out.print("Not Vaild");
+			
+			}
+
+			
+		}
+		
 	}
 	
 	private void DisplayCreateAccount(Scanner sc) {
-		
-		
-		
-
 		
 	
 		boolean running = true;
@@ -279,11 +311,13 @@ public class ConsoleBankAppImp implements UIBankApp {
 				running = false;
 				break;
 			case "2":
-				BankEmployee employee = DisplayCreateEmployeeAccount(sc);
-				
-			case "4":
-				System.out.println("Ok");
+				BankEmployee bankemployee = DisplayCreateEmployeeAccount(sc);
+				this.service.MakeEmployeeAccount(bankemployee);						
 				running = false;
+				break;
+
+			case "4":
+				
 				break;
 
 			default:
@@ -329,7 +363,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 		System.out.println("Enter Last Name: ");
 		String LastName = sc.nextLine();
 		
-		BankEmployee bankEmployee = new BankEmployee(userName, password, firstName, LastName);
+		BankEmployee bankEmployee = new BankEmployee(userName, password, new Random().nextInt(100000), firstName, LastName);
 		
 		
 		//System.out.println("4) Exit");
@@ -361,7 +395,17 @@ public class ConsoleBankAppImp implements UIBankApp {
 		
 		User user = new User(userName, password);
 		
-		//this.loggedIn = service.loginEmployee(user);
+		this.employeeLoggedIn = service.loginEmployee(user);
+		
+		this.loggedIn = 2;
+		
+		if(this.loggedIn == 2) {
+			
+			System.out.println(" You are logged in");
+		}
+		else {
+			System.out.println(" You are not logged in");
+		}
 		
 		//System.out.println("5) Exit");
 		return this.loggedIn;
@@ -459,7 +503,18 @@ public class ConsoleBankAppImp implements UIBankApp {
 						break;
 						
 					case "2":
-						DisplayEmployeeLoginPage(sc);
+						this.loggedIn =2;
+						
+						this.loggedIn = DisplayEmployeeLoginPage(sc);
+						//DisplayEmployeeLoginPage(sc);
+						
+						if(this.loggedIn == 2) {
+							//System.out.println("loggedIn cusomer: "+ this.customerLoggedIn.toString());
+							this.DisplayEmployeePage(sc);
+						}
+						else {
+							System.out.println("must log in as a Employee");
+						}
 						
 						break;
 					

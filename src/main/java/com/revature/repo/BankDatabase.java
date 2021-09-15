@@ -1,6 +1,7 @@
 package com.revature.repo;
 
 import com.revature.model.BankCustomer;
+import com.revature.model.BankEmployee;
 import com.revature.model.CustomerAccount;
 import com.revature.model.User;
 
@@ -21,5 +22,9 @@ public interface BankDatabase {
 	void updateCustomerAccount(double amount, int accountNumber);
 
 	void insertCustomerAccount(CustomerAccount customerAccount, int customerNumber);
+
+	BankEmployee selectEmployeeUser(User user);
+
+	void insertEmployee(BankEmployee bankemployee);
 
 }

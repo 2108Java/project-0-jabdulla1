@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import com.revature.model.BankCustomer;
+import com.revature.model.BankEmployee;
 import com.revature.model.CustomerAccount;
 import com.revature.model.User;
 import com.revature.repo.BankDatabase;
@@ -26,7 +27,7 @@ public class DAOBankService implements BankService {
 	@Override
 	public BankCustomer loginCustomer(User user) {
 		
-		int loggedIn =0;
+		//int loggedIn =0;
 		
 		//loggedIn = this.bankDatabase.selectCustomerUser(user, customerLoggedIn);
 		// TODO Auto-generated method stub
@@ -58,6 +59,23 @@ public class DAOBankService implements BankService {
 	public void MakeNewCustomerAccount(CustomerAccount customerAccount, int customerNumber) {
 		// TODO Auto-generated method stub
 		this.bankDatabase.insertCustomerAccount(customerAccount, customerNumber);
+	}
+
+	@Override
+	public BankEmployee loginEmployee(User user) {
+		// TODO Auto-generated method stub
+		
+		return this.bankDatabase.selectEmployeeUser(user);
+	}
+
+	@Override
+	public void MakeEmployeeAccount(BankEmployee bankemployee) {
+		// TODO Auto-generated method stub
+		
+		this.bankDatabase.insertEmployee(bankemployee);
+		
+		System.out.println("Added to the employee database");
+		
 	}
 
 

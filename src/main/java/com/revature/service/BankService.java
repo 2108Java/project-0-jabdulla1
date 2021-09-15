@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import com.revature.model.BankCustomer;
+import com.revature.model.BankEmployee;
 import com.revature.model.CustomerAccount;
 import com.revature.model.User;
 
@@ -34,6 +35,12 @@ public interface BankService {
 
 
 	void MakeNewCustomerAccount(CustomerAccount customerAccount, int customerNumber);
+
+
+	BankEmployee loginEmployee(User user);
+
+
+	void MakeEmployeeAccount(BankEmployee bankemployee);
 
 
 
