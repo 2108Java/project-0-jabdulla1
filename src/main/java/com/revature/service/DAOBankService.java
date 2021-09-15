@@ -78,6 +78,25 @@ public class DAOBankService implements BankService {
 		
 	}
 
+	@Override
+	public CustomerAccount[] getAllCustomerAccounts() {
+		// TODO Auto-generated method stub
+		return this.bankDatabase.selectAllCustomerAccounts();
+	}
+
+	@Override
+	public void approveCustomerAccount(int accountNumber) {
+		// TODO Auto-generated method stub
+		this.bankDatabase.updateApproveCustomerAccount(accountNumber);
+		
+	}
+
+	@Override
+	public void removeCustomerAccount(int accountNumber) {
+		// TODO Auto-generated method stub
+		this.bankDatabase.deleteCustomerAccount(accountNumber);
+	}
+
 
 	
 }

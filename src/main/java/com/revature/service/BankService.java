@@ -43,6 +43,15 @@ public interface BankService {
 	void MakeEmployeeAccount(BankEmployee bankemployee);
 
 
+	CustomerAccount[] getAllCustomerAccounts();
+
+
+	void approveCustomerAccount(int accountNumber);
+
+
+	void removeCustomerAccount(int accountNumber);
+
+
 
 
 }

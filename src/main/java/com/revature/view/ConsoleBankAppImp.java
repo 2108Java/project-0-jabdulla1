@@ -45,7 +45,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 	
 	
 	private void DisplayLoginPage() {
-		System.out.println("Welcome To Bank App");
+		System.out.println("\nWelcome To Bank App");
 		System.out.println("Please Login");
 		System.out.println("1) Customer Login");
 		System.out.println("2) Employee Login");
@@ -64,7 +64,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 			
 			
 			
-			System.out.println("Welcome "+ customerLoggedIn.getFirstName() +" "+ customerLoggedIn.getLastName()+" To Bank App Customer Page");
+			System.out.println("\nWelcome "+ customerLoggedIn.getFirstName() +" "+ customerLoggedIn.getLastName()+" To Bank App Customer Page");
 			
 			System.out.println("View All Accounts");
 			CustomerAccount[] customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
@@ -101,7 +101,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 				
 				int x;
 				for( x = 0; x< customerAccounts.length; x++) {//change for error cheacking 
-					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == accountNumber)&&(customerAccounts[x].isIsapproved() == false)) {
+					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == accountNumber)&&(customerAccounts[x].isIsapproved() == true)) {
 						
 						amount += customerAccounts[x].getBalance();
 						
@@ -124,7 +124,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 				
 				//x =0;
 				for( x = 0; x< customerAccounts.length; x++) {//change for error cheacking 
-					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == accountNumber)&&(customerAccounts[x].isIsapproved() == false)) {
+					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == accountNumber)&&(customerAccounts[x].isIsapproved() == true)) {
 						
 						amount -= customerAccounts[x].getBalance();
 						
@@ -248,11 +248,12 @@ public class ConsoleBankAppImp implements UIBankApp {
 		
 		while(running) {
 			
-			System.out.println("Welcome "+this.employeeLoggedIn.getFirstName()+" "+this.employeeLoggedIn.getLastName()+" To Bank App Employee Page");
+			System.out.println("\nWelcome "+this.employeeLoggedIn.getFirstName()+" "+this.employeeLoggedIn.getLastName()+" To Bank App Employee Page");
 			System.out.println("1) View a log of all transactions");
 			
-			System.out.println("2) Approve or reject an account registration by a user");
-			
+			System.out.println("2) Approve or reject an account registration by a user");//need to update the data base to change isapproved, and if not then delete it from the database
+																						//need a customer account number and approve and reject
+																						// fix up display of customer accounts to print out statments
 			System.out.println("3) View account balances");
 			
 			System.out.println("4) Logout");
@@ -266,8 +267,37 @@ public class ConsoleBankAppImp implements UIBankApp {
 			case "1":
 				break;
 			case "2":
+				System.out.println("\nView All Account");
+				CustomerAccount[] customerAccounts = this.service.getAllCustomerAccounts();
+				printArray(customerAccounts);
+				
+				System.out.println("Enter Account Number: ");
+				accountNumber = Integer.parseInt(sc.nextLine());
+				
+				System.out.println("Enter Approval: ");
+				System.out.println("1) Approve: ");
+				System.out.println("2) Disaprove: ");
+				
+				int approval = Integer.parseInt(sc.nextLine());
+				
+				if(approval == 1) {
+					
+					this.service.approveCustomerAccount(accountNumber);
+					
+				}else if(approval == 2) {
+				
+					this.service.removeCustomerAccount(accountNumber);
+				}
+				else {
+					System.out.println("Wrong Entry");
+				}
+				
+				
 				break;
 			case "3":
+				System.out.println("\nView Account Balances");
+				CustomerAccount[] customerAccountsB = this.service.getAllCustomerAccounts();
+				printArray(customerAccountsB);
 				break;
 			
 			case "4":
@@ -294,7 +324,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 
 		while(running) {
 			
-			System.out.println("Welcome To Bank App Create Account Page");
+			System.out.println("\nWelcome To Bank App Create Account Page");
 			System.out.println("1) Create Customer Account");
 			System.out.println("2) Create Employee Account");
 			System.out.println("3) Create Admin Account");
@@ -330,7 +360,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 	}
 	
 	private BankCustomer DisplayCreateCustormerAccount(Scanner sc) {
-		System.out.println("Welcome To Bank App Create Customer Account Page");
+		System.out.println("\nWelcome To Bank App Create Customer Account Page");
 		System.out.println("Enter A User Name: ");
 		String userName = sc.nextLine();
 		
@@ -383,7 +413,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 		
 	}
 	private int DisplayEmployeeLoginPage(Scanner sc) {
-		System.out.println("Welcome To Employee Login Bank App Page");
+		System.out.println("\nWelcome To Employee Login Bank App Page");
 		System.out.println("Please Login");
 		
 		System.out.println("Enter Employee User Name: ");
@@ -424,7 +454,7 @@ public class ConsoleBankAppImp implements UIBankApp {
 	}
 
 	private int DisplayCustomerLoginPage(Scanner sc) {
-		System.out.println("Welcome To Customer Login Bank App Page");
+		System.out.println("\nWelcome To Customer Login Bank App Page");
 		System.out.println("Please Login");
 		
 		System.out.println("Enter Customer User Name: ");

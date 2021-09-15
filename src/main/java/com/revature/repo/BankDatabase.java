@@ -27,4 +27,10 @@ public interface BankDatabase {
 
 	void insertEmployee(BankEmployee bankemployee);
 
+	CustomerAccount[] selectAllCustomerAccounts();
+
+	void updateApproveCustomerAccount(int accountNumber);
+
+	void deleteCustomerAccount(int accountNumber);
+
 }

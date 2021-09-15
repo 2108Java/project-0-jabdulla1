@@ -124,7 +124,7 @@ public class PostgreToDoDatabase implements BankDatabase {
 						ps.setInt(1, customerLoggedIn.getCustomerNumber());
 						
 						
-						ResultSet rs = ps.executeQuery();
+						ResultSet rs = ps.executeQuery();//rs.getsi
 						
 						int x=0;
 						while((x < 10) && (rs.next())) {
@@ -306,6 +306,107 @@ public class PostgreToDoDatabase implements BankDatabase {
 			e.printStackTrace();
 		}
 		
+	}
+
+
+	@Override
+	public CustomerAccount[] selectAllCustomerAccounts() {
+		// TODO Auto-generated method stub
+		
+		
+CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
+		
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+
+			///			insert into customerAccount(customer_account_accountNumber, customer_account_typeOfAccount, customer_account_balance,
+			//foreign_customerLogin_key)values 
+		//(204309, 'CHECKING', 1231.50, (select customer_id from customerLogin where customer_number = 1234));
+
+						
+						//String sql = "INSERT INTO customerAccount(customer_account_accountNumber, customer_account_typeOfAccount, customer_account_balance, "
+						//		+ "foreign_customerLogin_key)values "
+						//		+ "(?, ?, ?, (SELECT customer_id FROM customerLogin WHERE customer_number = ?));";
+						
+//			select * from customerAccount  where foreign_customerLogin_key = (select customer_id from customerlogin where customer_number ='1234');
+			
+					
+						String sql = "SELECT * FROM customerAccount;";
+						
+						PreparedStatement ps = con.prepareStatement(sql);
+
+						//ps.setInt(1, customerLoggedIn.getCustomerNumber());
+						
+						
+						ResultSet rs = ps.executeQuery(); //rs.getsi
+						
+						int x=0;
+						while((x < 10) && (rs.next())) {
+							
+							allOfCustomerAccount[x]= new CustomerAccount(rs.getInt("customer_account_accountNumber"), rs.getString("customer_account_typeOfAccount"),
+									rs.getDouble("customer_account_balance"), rs.getInt("foreign_customerLogin_key"), rs.getBoolean("customer_account_isapproved"));
+									//ToDo(rs.getInt("id"), rs.getString("title"), 
+									//rs.getString("decription"), rs.getBoolean("complete"));
+							
+							x++;
+							
+						}
+						
+
+
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+		
+		return allOfCustomerAccount;
+	}
+
+
+	@Override
+	public void updateApproveCustomerAccount(int accountNumber) {
+		// TODO Auto-generated method stub
+	
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+			
+			String sql = "UPDATE customerAccount SET customer_account_isapproved = true WHERE customer_account_accountnumber = ?;";
+			PreparedStatement ps = con.prepareStatement(sql);
+			
+			
+			ps.setInt(1, accountNumber);
+	
+			
+			ps.execute();
+			
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+	@Override
+	public void deleteCustomerAccount(int accountNumber) {
+		// TODO Auto-generated method stub
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+
+			String sql = "DELETE FROM customerAccount WHERE customer_account_accountnumber = ?;";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+
+			ps.setInt(1, accountNumber);
+
+
+			ps.execute();
+
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 
