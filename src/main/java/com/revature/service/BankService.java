@@ -1,8 +1,10 @@
 package com.revature.service;
 
+import com.revature.model.AccountTransfer;
 import com.revature.model.BankCustomer;
 import com.revature.model.BankEmployee;
 import com.revature.model.CustomerAccount;
+import com.revature.model.Transaction;
 import com.revature.model.User;
 
 public interface BankService {
@@ -50,6 +52,21 @@ public interface BankService {
 
 
 	void removeCustomerAccount(int accountNumber);
+
+
+	void MakeTransfer(AccountTransfer accountTransfer);
+
+
+	AccountTransfer[] getAllCustomerAccountTransfers(BankCustomer customerLoggedIn);
+
+
+	void removeAccountTransfer(int transferAccountNumber);
+
+
+	void addTransAction(Transaction deposit);
+
+
+	Transaction[] getAllTransActions();
 
 
 

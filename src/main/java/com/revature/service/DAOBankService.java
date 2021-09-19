@@ -1,8 +1,10 @@
 package com.revature.service;
 
+import com.revature.model.AccountTransfer;
 import com.revature.model.BankCustomer;
 import com.revature.model.BankEmployee;
 import com.revature.model.CustomerAccount;
+import com.revature.model.Transaction;
 import com.revature.model.User;
 import com.revature.repo.BankDatabase;
 
@@ -95,6 +97,38 @@ public class DAOBankService implements BankService {
 	public void removeCustomerAccount(int accountNumber) {
 		// TODO Auto-generated method stub
 		this.bankDatabase.deleteCustomerAccount(accountNumber);
+	}
+
+	@Override
+	public void MakeTransfer(AccountTransfer accountTransfer) {
+		// TODO Auto-generated method stub
+		this.bankDatabase.InsertTransferAccount(accountTransfer);
+	}
+
+	@Override
+	public AccountTransfer[] getAllCustomerAccountTransfers(BankCustomer customerLoggedIn) {
+		// TODO Auto-generated method stub
+		
+		return this.bankDatabase.selectAllAccountTransfersOfCustomer(customerLoggedIn);
+		
+	}
+
+	@Override
+	public void removeAccountTransfer(int transferAccountNumber) {
+		// TODO Auto-generated method stub
+		this.bankDatabase.deleteAccountTransfer(transferAccountNumber);
+	}
+
+	@Override
+	public void addTransAction(Transaction transaction) {
+		// TODO Auto-generated method stub
+		this.bankDatabase.insertTransAction(transaction);
+	}
+
+	@Override
+	public Transaction[] getAllTransActions() {
+		// TODO Auto-generated method stub
+		return this.bankDatabase.selectAllTransActions();
 	}
 
 

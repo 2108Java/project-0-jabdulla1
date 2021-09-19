@@ -5,10 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 
+import com.revature.model.AccountTransfer;
 import com.revature.model.BankCustomer;
 import com.revature.model.BankEmployee;
 import com.revature.model.CustomerAccount;
+import com.revature.model.Transaction;
 import com.revature.model.User;
 
 public class PostgreToDoDatabase implements BankDatabase {
@@ -407,6 +410,204 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public void InsertTransferAccount(AccountTransfer accountTransfer) {
+		// TODO Auto-generated method stub
+		
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+
+			String sql = "INSERT INTO accountTransfer(tAccountNumber, startAccountNumber, endAccountNumber, transferAmount, foreign_customerLogin_key, isAccepted ) VALUES \r\n"
+					+ "(?, ?, ?, ?,(select customer_id from customerLogin where customer_number = ?), ?);";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			
+			/*
+			 * int id;
+	int tAccountNumber;
+	int startAccountNumber;
+	int endAccountNumber;
+	double transferAmount;
+	int customerNumber;
+	boolean isAccepted;
+
+			 */
+			ps.setInt(1,accountTransfer.gettAccountNumber());
+			ps.setInt(2,accountTransfer.getStartAccountNumber());
+			ps.setInt(3,accountTransfer.getEndAccountNumber());
+			ps.setDouble(4,accountTransfer.getTransferAmount());
+			ps.setInt(5,accountTransfer.getCustomerNumber());
+			ps.setBoolean(6,accountTransfer.isAccepted());
+
+
+			ps.execute();
+
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+
+	@Override
+	public AccountTransfer[] selectAllAccountTransfersOfCustomer(BankCustomer customerLoggedIn) {
+		// TODO Auto-generated method stub
+		AccountTransfer[] allOfCustomerTransfer = new AccountTransfer[10];
+		
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+			
+						String sql = "SELECT * FROM accountTransfer  WHERE foreign_customerLogin_key = (SELECT customer_id FROM customerlogin WHERE customer_number = ?);";
+						
+						PreparedStatement ps = con.prepareStatement(sql);
+
+						ps.setInt(1, customerLoggedIn.getCustomerNumber());
+						
+						
+						ResultSet rs = ps.executeQuery();//rs.getsi
+						
+						/*
+						 * accontTransfer_id serial primary key,
+	tAccountNumber int unique,
+	startAccountNumber int unique,
+	endAccountNumber int unique,
+	transferAmount real,
+	isAccepted boolean,
+	foreign_customerLogin_key int references customerLogin(customer_id)
+						 * */
+						
+						int x=0;
+						while((x < 10) && (rs.next())) {
+							
+							allOfCustomerTransfer[x]= new AccountTransfer(rs.getInt("tAccountNumber"), rs.getInt("startAccountNumber"),
+									rs.getInt("endAccountNumber"), rs.getDouble("transferAmount"), rs.getInt("foreign_customerLogin_key"), rs.getBoolean("isAccepted"));
+									//ToDo(rs.getInt("id"), rs.getString("title"), 
+									//rs.getString("decription"), rs.getBoolean("complete"));
+							
+							x++;
+							
+						}
+						
+
+
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+		
+		return allOfCustomerTransfer;
+
+	}
+
+
+	@Override
+	public void deleteAccountTransfer(int transferAccountNumber) {
+		// TODO Auto-generated method stub
+		
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+
+			String sql = "DELETE FROM accountTransfer WHERE tAccountNumber = ?;";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+
+			ps.setInt(1, transferAccountNumber);
+
+
+			ps.execute();
+
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+
+	@Override
+	public void insertTransAction(Transaction transaction) {
+		// TODO Auto-generated method stub
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+
+			String sql = "INSERT INTO transActions(transactionNumber, customerNumber, customerName, customerUserName, transActionType, transActionAmount) \r\n"
+					+ "VALUES (?, ?, ?, ?, ?, ?);";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+
+			ps.setInt(1, transaction.getTransactionNumber());
+			ps.setInt(2, transaction.getCustomerNumber());
+			ps.setString(3, transaction.getCustomerName());
+			ps.setString(4, transaction.getCustomerUserName());
+			ps.setString(5, transaction.getTransActionType());
+			ps.setDouble(6, transaction.getTransActionAmount());
+
+
+			ps.execute();
+
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+	@Override
+	public Transaction[] selectAllTransActions() {
+		// TODO Auto-generated method stub
+
+
+		
+		Transaction[] allTransaction = new Transaction[10];
+		
+		try(Connection con = DriverManager.getConnection(url, username, password)){
+
+
+						String sql = "SELECT * FROM Transactions";
+						
+						PreparedStatement ps = con.prepareStatement(sql);
+						
+						ResultSet rs = ps.executeQuery();//rs.getsi
+						/*
+						transactionId serial primary key,
+						transactionNumber int unique not null,
+						customerNumber int not null,
+						customerName varchar(30),
+						customerUserName varchar(30) not null,
+						transActionType varchar(15),
+						transActionAmount real	*/
+						/*
+						Transaction(int transactionNumber, int customerNumber, String customerName, String customerUserName,
+								String transActionType, double transActionAmount)*/
+						
+						int x=0;
+						while((x < 10) && (rs.next())) {
+							
+							allTransaction[x]= new Transaction(rs.getInt("transactionId"), rs.getInt("transactionNumber"),rs.getInt("customerNumber"), 
+									rs.getString("customerName"), rs.getString("customerUserName"), rs.getString("transActionType"), rs.getDouble("transActionAmount"));
+							
+							
+							x++;
+							
+						}
+						
+
+
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+		
+		return allTransaction;
+
 	}
 
 

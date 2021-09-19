@@ -1,8 +1,10 @@
 package com.revature.repo;
 
+import com.revature.model.AccountTransfer;
 import com.revature.model.BankCustomer;
 import com.revature.model.BankEmployee;
 import com.revature.model.CustomerAccount;
+import com.revature.model.Transaction;
 import com.revature.model.User;
 
 public interface BankDatabase {
@@ -32,5 +34,15 @@ public interface BankDatabase {
 	void updateApproveCustomerAccount(int accountNumber);
 
 	void deleteCustomerAccount(int accountNumber);
+
+	void InsertTransferAccount(AccountTransfer accountTransfer);
+
+	AccountTransfer[] selectAllAccountTransfersOfCustomer(BankCustomer customerLoggedIn);
+
+	void deleteAccountTransfer(int transferAccountNumber);
+
+	void insertTransAction(Transaction transaction);
+
+	Transaction[] selectAllTransActions();
 
 }
