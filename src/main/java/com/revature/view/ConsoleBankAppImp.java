@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.model.AccountTransfer;
 import com.revature.model.BankCustomer;
 import com.revature.model.BankEmployee;
@@ -13,7 +15,8 @@ import com.revature.model.User;
 import com.revature.service.BankService;
 
 public class ConsoleBankAppImp implements UIBankApp {
-
+	private static final Logger loggy = Logger.getLogger(ConsoleBankAppImp.class);
+	
 	private BankService service;
 	
 	BankCustomer customerLoggedIn = null;
@@ -138,9 +141,9 @@ private void printArray(Transaction[] transaction) {
 				for( x = 0; x< customerAccounts.length; x++) {//change for error cheacking 
 					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == daccountNumber)&&(customerAccounts[x].isIsapproved() == true)) {
 						
-						damount += customerAccounts[x].getBalance();
+						//damount += customerAccounts[x].getBalance();
 						
-						this.service.MakeDeposit(damount, daccountNumber);
+						this.service.MakeDeposit(damount +customerAccounts[x].getBalance(), daccountNumber);
 						
 			
 						
@@ -148,6 +151,8 @@ private void printArray(Transaction[] transaction) {
 								this.customerLoggedIn.getFirstName()+" "+this.customerLoggedIn.getLastName(), this.customerLoggedIn.getUserName(), "DEPOSIT", damount);
 						
 						this.service.addTransAction(deposit);
+						
+						loggy.info("deposit made and transactions logged");
 						
 						break;
 					}
@@ -169,9 +174,9 @@ private void printArray(Transaction[] transaction) {
 				for( x = 0; x< customerAccounts.length; x++) {//change for error cheacking 
 					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == waccountNumber)&&(customerAccounts[x].isIsapproved() == true)) {
 						
-						wamount = customerAccounts[x].getBalance() - wamount;
+						//wamount = customerAccounts[x].getBalance() - wamount;
 						
-						this.service.MakeWithdrawal(waccountNumber, wamount);
+						this.service.MakeWithdrawal(waccountNumber, customerAccounts[x].getBalance() - wamount);
 						
 						Transaction withdrawal = new Transaction(new Random().nextInt(100000), this.customerLoggedIn.getCustomerNumber(), 
 								this.customerLoggedIn.getFirstName()+" "+this.customerLoggedIn.getLastName(), this.customerLoggedIn.getUserName(), "WITHDRAWAL", wamount);
@@ -182,6 +187,7 @@ private void printArray(Transaction[] transaction) {
 					}
 				}
 				
+				loggy.info("withdrawal made and transactions logged");
 				
 				break;
 				
@@ -221,6 +227,7 @@ private void printArray(Transaction[] transaction) {
 				
 				this.service.MakeNewCustomerAccount(new CustomerAccount(new Random().nextInt(100000), accountType, createAmount,0 , false ),  this.customerLoggedIn.getCustomerNumber());
 				
+				loggy.info("new customer account made");
 								
 				break;
 				
@@ -263,6 +270,8 @@ private void printArray(Transaction[] transaction) {
 						this.customerLoggedIn.getFirstName()+" "+this.customerLoggedIn.getLastName(), this.customerLoggedIn.getUserName(), "TRANSFER", transferAmount);
 				
 				this.service.addTransAction(transfer);
+				
+				loggy.info("transfer made and transaction made");
 				
 				break;
 				
@@ -329,7 +338,7 @@ private void printArray(Transaction[] transaction) {
 						break;
 					}
 				}
-				
+				loggy.info("transfer accepted or deny");
 				break;
 				//this.service.AcceptMoneyTransfer(transferAccountNumber, this.customerLoggedIn.getCustomerNumber());
 				
@@ -400,6 +409,7 @@ private void printArray(Transaction[] transaction) {
 				Transaction[] transActions = this.service.getAllTransActions();
 				printArray(transActions);
 				
+				loggy.info("employee view of all transactions");
 				
 				break;
 			case "2":
@@ -428,12 +438,15 @@ private void printArray(Transaction[] transaction) {
 					System.out.println("Wrong Entry");
 				}
 				
+				loggy.info("approval and denial made of accounts");
 				
 				break;
 			case "3":
 				System.out.println("\nView Account Balances");
 				CustomerAccount[] customerAccountsB = this.service.getAllCustomerAccounts();
 				printArray(customerAccountsB);
+				
+				loggy.info("accounts viewed");
 				break;
 			
 			case "4":
@@ -474,11 +487,14 @@ private void printArray(Transaction[] transaction) {
 
 				this.service.MakeCustomerAccount(bankcustomer);						
 				running = false;
+				loggy.info("bank customer's account created "+bankcustomer.toString());
+				
 				break;
 			case "2":
 				BankEmployee bankemployee = DisplayCreateEmployeeAccount(sc);
 				this.service.MakeEmployeeAccount(bankemployee);						
 				running = false;
+				loggy.info("bank employee's account created "+bankemployee.toString());
 				break;
 
 			case "3":
@@ -511,7 +527,7 @@ private void printArray(Transaction[] transaction) {
 		
 		//this.service.MakeCustomerAccount(bankCustomer);
 		//System.out.println("4) Exit");
-
+		
 		return bankCustomer;
 	}
 	
@@ -530,8 +546,6 @@ private void printArray(Transaction[] transaction) {
 		
 		BankEmployee bankEmployee = new BankEmployee(userName, password, new Random().nextInt(100000), firstName, LastName);
 		
-		
-		//System.out.println("4) Exit");
 
 		return bankEmployee;
 		
@@ -556,9 +570,11 @@ private void printArray(Transaction[] transaction) {
 		
 		if(this.loggedIn == 2) {
 			
+			loggy.info("Employee logged in");
 			System.out.println(" You are logged in");
 		}
 		else {
+			loggy.warn("Employee failed to log in");
 			System.out.println(" You are not logged in");
 		}
 		
@@ -589,10 +605,11 @@ private void printArray(Transaction[] transaction) {
 		this.loggedIn = 1;
 		
 		if(this.loggedIn == 1) {
-			
+			loggy.info("Customer logged in");
 			System.out.println(" You are logged in");
 		}
 		else {
+			loggy.info("Customer failed to log in");
 			System.out.println(" You are not logged in");
 		}
 		
@@ -634,15 +651,17 @@ private void printArray(Transaction[] transaction) {
 					
 					case "1":
 						
-						this.loggedIn =1;
+						
 						
 						this.loggedIn = DisplayCustomerLoginPage(sc);
-						
+						this.loggedIn =1;
 						if(this.loggedIn == 1) {
+							loggy.info("loggedIn cusomer: "+ this.customerLoggedIn.toString());
 							//System.out.println("loggedIn cusomer: "+ this.customerLoggedIn.toString());
 							this.DisplayCustomerPage(sc);
 						}
 						else {
+							loggy.warn("Customer failed to log in");
 							System.out.println("must log in as a Customer");
 						}
 						
@@ -655,10 +674,12 @@ private void printArray(Transaction[] transaction) {
 						//DisplayEmployeeLoginPage(sc);
 						
 						if(this.loggedIn == 2) {
+							loggy.info("loggedIn employee: "+ this.employeeLoggedIn.toString());
 							//System.out.println("loggedIn cusomer: "+ this.customerLoggedIn.toString());
 							this.DisplayEmployeePage(sc);
 						}
 						else {
+							loggy.warn("Employee failed to log in");
 							System.out.println("must log in as a Employee");
 						}
 						
@@ -676,6 +697,8 @@ private void printArray(Transaction[] transaction) {
 						running = false;
 						break;
 					default:
+						
+						loggy.warn("User (weather employee or customer) is not choose the write options");
 						System.out.println("Choose a Vaild Option");
 					
 					}

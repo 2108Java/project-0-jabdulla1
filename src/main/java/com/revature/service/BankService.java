@@ -9,7 +9,7 @@ import com.revature.model.User;
 
 public interface BankService {
 
-	void MakeCustomerAccount(BankCustomer bankcustomer);
+	boolean MakeCustomerAccount(BankCustomer bankcustomer);
 
 
 	//int loginCustomer(BankCustomer customerLoggedIn);
@@ -26,14 +26,15 @@ public interface BankService {
 
 	BankCustomer loginCustomer(User user);
 
+	
 
 	//void MakeDeposit(CustomerAccount[] customerAccounts, double amount, int accountNumber);
 
 
-	void MakeDeposit(double amount, int accountNumber);
+	boolean MakeDeposit(double amount, int accountNumber);
 
 
-	void MakeWithdrawal(int accountNumber, double amount);
+	boolean MakeWithdrawal(int accountNumber, double amount);
 
 
 	void MakeNewCustomerAccount(CustomerAccount customerAccount, int customerNumber);
@@ -42,16 +43,16 @@ public interface BankService {
 	BankEmployee loginEmployee(User user);
 
 
-	void MakeEmployeeAccount(BankEmployee bankemployee);
+	boolean MakeEmployeeAccount(BankEmployee bankemployee);
 
 
 	CustomerAccount[] getAllCustomerAccounts();
 
 
-	void approveCustomerAccount(int accountNumber);
+	boolean approveCustomerAccount(int accountNumber);
 
 
-	void removeCustomerAccount(int accountNumber);
+	boolean removeCustomerAccount(int accountNumber);
 
 
 	void MakeTransfer(AccountTransfer accountTransfer);
@@ -60,10 +61,10 @@ public interface BankService {
 	AccountTransfer[] getAllCustomerAccountTransfers(BankCustomer customerLoggedIn);
 
 
-	void removeAccountTransfer(int transferAccountNumber);
+	boolean removeAccountTransfer(int transferAccountNumber);
 
 
-	void addTransAction(Transaction deposit);
+	void addTransAction(Transaction transAction);
 
 
 	Transaction[] getAllTransActions();

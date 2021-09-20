@@ -22,9 +22,9 @@ public class PostgreToDoDatabase implements BankDatabase {
 	
 	
 	@Override
-	public void insertCustomer(BankCustomer bankcustomer) {
+	public boolean insertCustomer(BankCustomer bankcustomer) {
 		// TODO Auto-generated method stub
-		
+		boolean isCustomerInserted = false;
 		try(Connection con = DriverManager.getConnection(url, username, password)){
 
 ///			String sql ="insert into customerLogin (customer_userName, customer_userPassword, customer_number, customer_firstName, customer_lastName) values \r\n"
@@ -52,7 +52,9 @@ public class PostgreToDoDatabase implements BankDatabase {
 			e.printStackTrace();
 		}
 		
+		isCustomerInserted = true;
 		
+		return isCustomerInserted;
 	}
 
 
@@ -154,8 +156,10 @@ public class PostgreToDoDatabase implements BankDatabase {
 
 
 	@Override
-	public void updateCustomerAccount(double amount, int accountNumber) {
+	public boolean updateCustomerAccount(double amount, int accountNumber) {
 		// TODO Auto-generated method stub
+		
+		boolean updated = false;
 		try(Connection con = DriverManager.getConnection(url, username, password)){
 		
 			String sql = "UPDATE customerAccount SET customer_account_balance = ? WHERE customer_account_accountnumber = ?;	";
@@ -180,7 +184,8 @@ public class PostgreToDoDatabase implements BankDatabase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		updated = true;
+		return updated;
 	}
 
 
@@ -280,9 +285,9 @@ public class PostgreToDoDatabase implements BankDatabase {
 
 
 	@Override
-	public void insertEmployee(BankEmployee bankemployee) {
+	public boolean insertEmployee(BankEmployee bankemployee) {
 		// TODO Auto-generated method stub
-		
+		boolean isEmployeeInserted = false;
 
 		try(Connection con = DriverManager.getConnection(url, username, password)){
 
@@ -308,7 +313,9 @@ public class PostgreToDoDatabase implements BankDatabase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		isEmployeeInserted = true;
 		
+		return isEmployeeInserted;
 	}
 
 
@@ -367,9 +374,10 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 
 
 	@Override
-	public void updateApproveCustomerAccount(int accountNumber) {
+	public boolean updateApproveCustomerAccount(int accountNumber) {
 		// TODO Auto-generated method stub
 	
+		boolean isarpproved = false;
 		try(Connection con = DriverManager.getConnection(url, username, password)){
 			
 			String sql = "UPDATE customerAccount SET customer_account_isapproved = true WHERE customer_account_accountnumber = ?;";
@@ -387,12 +395,18 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		isarpproved= true;
+		
+		return isarpproved;
 	}
 
 
 	@Override
-	public void deleteCustomerAccount(int accountNumber) {
+	public boolean deleteCustomerAccount(int accountNumber) {
 		// TODO Auto-generated method stub
+		
+		boolean isDeleteCustomerAccount = false;
 		try(Connection con = DriverManager.getConnection(url, username, password)){
 
 			String sql = "DELETE FROM customerAccount WHERE customer_account_accountnumber = ?;";
@@ -410,6 +424,9 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		isDeleteCustomerAccount= true;
+		
+		return isDeleteCustomerAccount;
 	}
 
 
@@ -506,8 +523,9 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 
 
 	@Override
-	public void deleteAccountTransfer(int transferAccountNumber) {
+	public boolean deleteAccountTransfer(int transferAccountNumber) {
 		// TODO Auto-generated method stub
+		boolean isdeleteAccountTransfer= false;
 		
 		try(Connection con = DriverManager.getConnection(url, username, password)){
 
@@ -526,7 +544,9 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		isdeleteAccountTransfer= true;
 		
+		return isdeleteAccountTransfer;
 	}
 
 

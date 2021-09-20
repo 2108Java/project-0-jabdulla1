@@ -9,7 +9,7 @@ import com.revature.model.User;
 
 public interface BankDatabase {
 
-	void insertCustomer(BankCustomer bankcustomer);
+	boolean insertCustomer(BankCustomer bankcustomer);
 
 	//int selectCustomerUser(BankCustomer customerLoggedIn);
 
@@ -21,25 +21,25 @@ public interface BankDatabase {
 
 	//void updateCustomerAccount(CustomerAccount[] customerAccounts, double amount, int accountNumber);
 
-	void updateCustomerAccount(double amount, int accountNumber);
+	boolean updateCustomerAccount(double amount, int accountNumber);
 
 	void insertCustomerAccount(CustomerAccount customerAccount, int customerNumber);
 
 	BankEmployee selectEmployeeUser(User user);
 
-	void insertEmployee(BankEmployee bankemployee);
+	boolean insertEmployee(BankEmployee bankemployee);
 
 	CustomerAccount[] selectAllCustomerAccounts();
 
-	void updateApproveCustomerAccount(int accountNumber);
+	boolean updateApproveCustomerAccount(int accountNumber);
 
-	void deleteCustomerAccount(int accountNumber);
+	boolean deleteCustomerAccount(int accountNumber);
 
 	void InsertTransferAccount(AccountTransfer accountTransfer);
 
 	AccountTransfer[] selectAllAccountTransfersOfCustomer(BankCustomer customerLoggedIn);
 
-	void deleteAccountTransfer(int transferAccountNumber);
+	boolean deleteAccountTransfer(int transferAccountNumber);
 
 	void insertTransAction(Transaction transaction);
 

@@ -16,12 +16,12 @@ public class DAOBankService implements BankService {
 	}
 
 	@Override
-	public void MakeCustomerAccount(BankCustomer bankcustomer) {
+	public boolean MakeCustomerAccount(BankCustomer bankcustomer) {
 		// TODO Auto-generated method stub
 		
-		this.bankDatabase.insertCustomer(bankcustomer);
+		return this.bankDatabase.insertCustomer(bankcustomer);
 		
-		System.out.println("Added to the customer database");
+//		System.out.println("Added to the customer database");
 	}
 
 	
@@ -45,16 +45,16 @@ public class DAOBankService implements BankService {
 	}
 
 	@Override
-	public void MakeDeposit(double amount, int accountNumber) {
+	public boolean MakeDeposit(double amount, int accountNumber) {
 		// TODO Auto-generated method stub
-		this.bankDatabase.updateCustomerAccount(amount, accountNumber);
+		return this.bankDatabase.updateCustomerAccount(amount, accountNumber);
 	}
 
 	@Override
-	public void MakeWithdrawal(int accountNumber, double amount) {
+	public boolean MakeWithdrawal(int accountNumber, double amount) {
 		// TODO Auto-generated method stub
 	
-		this.bankDatabase.updateCustomerAccount(amount, accountNumber);
+		return this.bankDatabase.updateCustomerAccount(amount, accountNumber);
 	}
 
 	@Override
@@ -71,12 +71,12 @@ public class DAOBankService implements BankService {
 	}
 
 	@Override
-	public void MakeEmployeeAccount(BankEmployee bankemployee) {
+	public boolean MakeEmployeeAccount(BankEmployee bankemployee) {
 		// TODO Auto-generated method stub
 		
-		this.bankDatabase.insertEmployee(bankemployee);
+		return this.bankDatabase.insertEmployee(bankemployee);
 		
-		System.out.println("Added to the employee database");
+		//System.out.println("Added to the employee database");
 		
 	}
 
@@ -87,16 +87,16 @@ public class DAOBankService implements BankService {
 	}
 
 	@Override
-	public void approveCustomerAccount(int accountNumber) {
+	public boolean approveCustomerAccount(int accountNumber) {
 		// TODO Auto-generated method stub
-		this.bankDatabase.updateApproveCustomerAccount(accountNumber);
+		return this.bankDatabase.updateApproveCustomerAccount(accountNumber);
 		
 	}
 
 	@Override
-	public void removeCustomerAccount(int accountNumber) {
+	public boolean removeCustomerAccount(int accountNumber) {
 		// TODO Auto-generated method stub
-		this.bankDatabase.deleteCustomerAccount(accountNumber);
+		return this.bankDatabase.deleteCustomerAccount(accountNumber);
 	}
 
 	@Override
@@ -114,9 +114,9 @@ public class DAOBankService implements BankService {
 	}
 
 	@Override
-	public void removeAccountTransfer(int transferAccountNumber) {
+	public boolean removeAccountTransfer(int transferAccountNumber) {
 		// TODO Auto-generated method stub
-		this.bankDatabase.deleteAccountTransfer(transferAccountNumber);
+		return this.bankDatabase.deleteAccountTransfer(transferAccountNumber);
 	}
 
 	@Override
