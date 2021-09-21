@@ -123,15 +123,20 @@ public class AccountTransfer {
 		this.isAccepted = isAccepted;
 	}
 
-
-
+	@Override
+	public String toString()  {
+		return "\nAccountTransfer---- \n Account Transfer AccountNumber: " + tAccountNumber + "\n Start Account Number:"
+				+ startAccountNumber + "\n End Account Number: " + endAccountNumber + "\n Transfer Amount: " + transferAmount
+				+ "\n Is it Accepted: " + isAccepted;
+	}
+/*
 	@Override
 	public String toString() {
 		return "AccountTransfer [id=" + id + ", tAccountNumber=" + tAccountNumber + ", startAccountNumber="
 				+ startAccountNumber + ", endAccountNumber=" + endAccountNumber + ", transferAmount=" + transferAmount
 				+ ", isAccepted=" + isAccepted + "]";
 	}
-
+*/
 	
 	
 }

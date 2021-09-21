@@ -81,11 +81,15 @@ public class BankEmployee extends User{
 		this.lastName = lastName;
 	}
 
-
+	@Override
+	public String toString() {
+		return "\nBankCustomer---- \n "+super.toString()+"\n FirstName: " + firstName + "\n LastName: " + lastName;
+	}
+	/*
 	@Override
 	public String toString() {
 		return "BankCustomer [firstName=" + firstName + ", lastName=" + lastName + "] "+ super.toString();
-	}
+	}*/
 	
 	
 }

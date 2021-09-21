@@ -22,14 +22,20 @@ public class CustomerAccount {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "\nCustomerAccount---- \n Account Number: " + accountNumber + "\n Type Of Account: " + typeOfAccount
+				+ "\n Balance: " + balance + "\n Is it Approved: " + isapproved;
 
-
+		
+	}
+/*
 	@Override
 	public String toString() {
 		return "CustomerAccount [id=" + id + ", accountNumber=" + accountNumber + ", typeOfAccount=" + typeOfAccount
 				+ ", balance=" + balance + ", isapproved=" + isapproved + ", foreign_customer_key="
 				+ foreign_customer_key + "]";
-	}
+	}*/
 
 
 

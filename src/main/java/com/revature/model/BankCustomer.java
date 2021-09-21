@@ -33,19 +33,7 @@ public class BankCustomer extends User{
 	}
 	
 	
-	
-/*
 
-	public BankCustomer(String userName, String password) {
-		super(userName, password);
-		// TODO Auto-generated constructor stub
-		
-		this.customerNumber = 0;
-		this.firstName= "";
-		this.lastName = "";
-	}
-
-*/
 
 
 
@@ -89,15 +77,19 @@ public class BankCustomer extends User{
 	}
 
 
+	@Override
+	public String toString() {
+		return "\nBankCustomer---- \n CustomerNumber: " + this.customerNumber +"\n "+ super.toString() +"\n FirstName: " + this.firstName				
+				+ "\n LastName: " + this.lastName + " ";
+	}
 
-
-
+/*
 	@Override
 	public String toString() {
 		return "BankCustomer [id=" + this.id + ", customerNumber=" + this.customerNumber + ", firstName=" + this.firstName
 				+ ", lastName=" + this.lastName + "]"+ super.toString();
 	}
-
+*/
 
 	
 	

@@ -1,5 +1,7 @@
 package com.revature.service;
 
+import java.util.ArrayList;
+
 import com.revature.model.AccountTransfer;
 import com.revature.model.BankCustomer;
 import com.revature.model.BankEmployee;
@@ -15,8 +17,8 @@ public interface BankService {
 	//int loginCustomer(BankCustomer customerLoggedIn);
 
 
-	CustomerAccount[] getAllAccountsOfCustomer(BankCustomer customerLoggedIn);
-
+	//CustomerAccount[] getAllAccountsOfCustomer(BankCustomer customerLoggedIn);
+	ArrayList<CustomerAccount> getAllAccountsOfCustomer(BankCustomer customerLoggedIn);
 
 	//int loginCustomer(User user, BankCustomer customerLoggedIn);
 
@@ -46,7 +48,8 @@ public interface BankService {
 	boolean MakeEmployeeAccount(BankEmployee bankemployee);
 
 
-	CustomerAccount[] getAllCustomerAccounts();
+	//CustomerAccount[] getAllCustomerAccounts();
+	ArrayList<CustomerAccount> getAllCustomerAccounts();
 
 
 	boolean approveCustomerAccount(int accountNumber);
@@ -58,7 +61,8 @@ public interface BankService {
 	void MakeTransfer(AccountTransfer accountTransfer);
 
 
-	AccountTransfer[] getAllCustomerAccountTransfers(BankCustomer customerLoggedIn);
+	//AccountTransfer[] getAllCustomerAccountTransfers(BankCustomer customerLoggedIn);
+	ArrayList<AccountTransfer> getAllCustomerAccountTransfers(BankCustomer customerLoggedIn);
 
 
 	boolean removeAccountTransfer(int transferAccountNumber);
@@ -67,7 +71,8 @@ public interface BankService {
 	void addTransAction(Transaction transAction);
 
 
-	Transaction[] getAllTransActions();
+	//Transaction[] getAllTransActions();
+	ArrayList<Transaction> getAllTransActions();
 
 
 

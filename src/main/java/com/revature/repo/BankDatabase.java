@@ -1,5 +1,8 @@
 package com.revature.repo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.revature.model.AccountTransfer;
 import com.revature.model.BankCustomer;
 import com.revature.model.BankEmployee;
@@ -13,7 +16,8 @@ public interface BankDatabase {
 
 	//int selectCustomerUser(BankCustomer customerLoggedIn);
 
-	CustomerAccount[] selectAllAccountsOfCustomer(BankCustomer customerLoggedIn);
+	//CustomerAccount[] selectAllAccountsOfCustomer(BankCustomer customerLoggedIn);
+	ArrayList<CustomerAccount> selectAllAccountsOfCustomer(BankCustomer customerLoggedIn);
 
 	//int selectCustomerUser(User user, BankCustomer customerLoggedIn);
 
@@ -29,7 +33,7 @@ public interface BankDatabase {
 
 	boolean insertEmployee(BankEmployee bankemployee);
 
-	CustomerAccount[] selectAllCustomerAccounts();
+	ArrayList<CustomerAccount> selectAllCustomerAccounts();
 
 	boolean updateApproveCustomerAccount(int accountNumber);
 
@@ -37,12 +41,14 @@ public interface BankDatabase {
 
 	void InsertTransferAccount(AccountTransfer accountTransfer);
 
-	AccountTransfer[] selectAllAccountTransfersOfCustomer(BankCustomer customerLoggedIn);
+	//AccountTransfer[] selectAllAccountTransfersOfCustomer(BankCustomer customerLoggedIn);
+	ArrayList<AccountTransfer> selectAllAccountTransfersOfCustomer(BankCustomer customerLoggedIn);
 
 	boolean deleteAccountTransfer(int transferAccountNumber);
 
 	void insertTransAction(Transaction transaction);
 
-	Transaction[] selectAllTransActions();
+	//Transaction[] selectAllTransActions();
+	ArrayList<Transaction> selectAllTransActions();
 
 }

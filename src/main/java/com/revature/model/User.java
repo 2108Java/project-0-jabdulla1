@@ -14,13 +14,16 @@ public class User {
 		this.password = password;
 	}
 	
-	
-	
 	@Override
+	public String toString() {
+		return "\nUser Name: "+ userName ;
+	}
+	
+	/*@Override
 	public String toString() {
 		return "User [userName=" + userName + ", password=" + password + "]";
 	}
-
+*/
 
 	public int getId() {
 		return id;

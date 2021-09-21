@@ -1,5 +1,8 @@
 package com.revature.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.revature.model.AccountTransfer;
 import com.revature.model.BankCustomer;
 import com.revature.model.BankEmployee;
@@ -37,7 +40,7 @@ public class DAOBankService implements BankService {
 	}
 
 	@Override
-	public CustomerAccount[] getAllAccountsOfCustomer(BankCustomer customerLoggedIn) {
+	public ArrayList<CustomerAccount> getAllAccountsOfCustomer(BankCustomer customerLoggedIn) {
 		// TODO Auto-generated method stub
 			//this.bankDatabase.selectAllAccountsOfCustomer(customerLoggedIn);
 		
@@ -81,7 +84,7 @@ public class DAOBankService implements BankService {
 	}
 
 	@Override
-	public CustomerAccount[] getAllCustomerAccounts() {
+	public ArrayList<CustomerAccount> getAllCustomerAccounts() {
 		// TODO Auto-generated method stub
 		return this.bankDatabase.selectAllCustomerAccounts();
 	}
@@ -106,7 +109,7 @@ public class DAOBankService implements BankService {
 	}
 
 	@Override
-	public AccountTransfer[] getAllCustomerAccountTransfers(BankCustomer customerLoggedIn) {
+	public ArrayList<AccountTransfer> getAllCustomerAccountTransfers(BankCustomer customerLoggedIn) {
 		// TODO Auto-generated method stub
 		
 		return this.bankDatabase.selectAllAccountTransfersOfCustomer(customerLoggedIn);
@@ -126,7 +129,7 @@ public class DAOBankService implements BankService {
 	}
 
 	@Override
-	public Transaction[] getAllTransActions() {
+	public ArrayList<Transaction> getAllTransActions() {
 		// TODO Auto-generated method stub
 		return this.bankDatabase.selectAllTransActions();
 	}

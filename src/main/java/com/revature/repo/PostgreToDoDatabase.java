@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.revature.model.AccountTransfer;
@@ -45,7 +46,7 @@ public class PostgreToDoDatabase implements BankDatabase {
 			ps.execute();
 			
 			
-
+			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -104,9 +105,9 @@ public class PostgreToDoDatabase implements BankDatabase {
 
 
 	@Override
-	public CustomerAccount[] selectAllAccountsOfCustomer(BankCustomer customerLoggedIn) {
+	public ArrayList<CustomerAccount> selectAllAccountsOfCustomer(BankCustomer customerLoggedIn) {
 		// TODO Auto-generated method stub
-		CustomerAccount[] allOfCustomer = new CustomerAccount[10];
+		ArrayList<CustomerAccount> allOfCustomer = new ArrayList<CustomerAccount>();
 		
 		try(Connection con = DriverManager.getConnection(url, username, password)){
 
@@ -131,15 +132,14 @@ public class PostgreToDoDatabase implements BankDatabase {
 						
 						ResultSet rs = ps.executeQuery();//rs.getsi
 						
-						int x=0;
-						while((x < 10) && (rs.next())) {
+						
+						while(rs.next()) {
 							
-							allOfCustomer[x]= new CustomerAccount(rs.getInt("customer_account_accountNumber"), rs.getString("customer_account_typeOfAccount"),
-									rs.getDouble("customer_account_balance"), rs.getInt("foreign_customerLogin_key"), rs.getBoolean("customer_account_isapproved"));
+							allOfCustomer.add(new CustomerAccount(rs.getInt("customer_account_accountNumber"), rs.getString("customer_account_typeOfAccount"),
+									rs.getDouble("customer_account_balance"), rs.getInt("foreign_customerLogin_key"), rs.getBoolean("customer_account_isapproved")));
 									//ToDo(rs.getInt("id"), rs.getString("title"), 
 									//rs.getString("decription"), rs.getBoolean("complete"));
 							
-							x++;
 							
 						}
 						
@@ -320,11 +320,11 @@ public class PostgreToDoDatabase implements BankDatabase {
 
 
 	@Override
-	public CustomerAccount[] selectAllCustomerAccounts() {
+	public ArrayList<CustomerAccount> selectAllCustomerAccounts() {
 		// TODO Auto-generated method stub
 		
 		
-CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
+ArrayList<CustomerAccount> allOfCustomerAccount = new ArrayList<CustomerAccount>();
 		
 		try(Connection con = DriverManager.getConnection(url, username, password)){
 
@@ -349,15 +349,14 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 						
 						ResultSet rs = ps.executeQuery(); //rs.getsi
 						
-						int x=0;
-						while((x < 10) && (rs.next())) {
+						
+						while(rs.next()) {
 							
-							allOfCustomerAccount[x]= new CustomerAccount(rs.getInt("customer_account_accountNumber"), rs.getString("customer_account_typeOfAccount"),
-									rs.getDouble("customer_account_balance"), rs.getInt("foreign_customerLogin_key"), rs.getBoolean("customer_account_isapproved"));
+							allOfCustomerAccount.add( new CustomerAccount(rs.getInt("customer_account_accountNumber"), rs.getString("customer_account_typeOfAccount"),
+									rs.getDouble("customer_account_balance"), rs.getInt("foreign_customerLogin_key"), rs.getBoolean("customer_account_isapproved")));
 									//ToDo(rs.getInt("id"), rs.getString("title"), 
 									//rs.getString("decription"), rs.getBoolean("complete"));
 							
-							x++;
 							
 						}
 						
@@ -472,9 +471,9 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 
 
 	@Override
-	public AccountTransfer[] selectAllAccountTransfersOfCustomer(BankCustomer customerLoggedIn) {
+	public ArrayList<AccountTransfer> selectAllAccountTransfersOfCustomer(BankCustomer customerLoggedIn) {
 		// TODO Auto-generated method stub
-		AccountTransfer[] allOfCustomerTransfer = new AccountTransfer[10];
+		ArrayList<AccountTransfer>allOfCustomerTransfer = new ArrayList<AccountTransfer>();
 		
 		try(Connection con = DriverManager.getConnection(url, username, password)){
 			
@@ -497,15 +496,13 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 	foreign_customerLogin_key int references customerLogin(customer_id)
 						 * */
 						
-						int x=0;
-						while((x < 10) && (rs.next())) {
+						while(rs.next()) {
 							
-							allOfCustomerTransfer[x]= new AccountTransfer(rs.getInt("tAccountNumber"), rs.getInt("startAccountNumber"),
-									rs.getInt("endAccountNumber"), rs.getDouble("transferAmount"), rs.getInt("foreign_customerLogin_key"), rs.getBoolean("isAccepted"));
+							allOfCustomerTransfer.add(new AccountTransfer(rs.getInt("tAccountNumber"), rs.getInt("startAccountNumber"),
+									rs.getInt("endAccountNumber"), rs.getDouble("transferAmount"), rs.getInt("foreign_customerLogin_key"), rs.getBoolean("isAccepted")));
 									//ToDo(rs.getInt("id"), rs.getString("title"), 
-									//rs.getString("decription"), rs.getBoolean("complete"));
+									//rs.getString("decription"), rs.getBoolean("complete"));						
 							
-							x++;
 							
 						}
 						
@@ -580,12 +577,12 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 
 
 	@Override
-	public Transaction[] selectAllTransActions() {
+	public ArrayList<Transaction> selectAllTransActions() {
 		// TODO Auto-generated method stub
 
 
 		
-		Transaction[] allTransaction = new Transaction[10];
+		ArrayList<Transaction> allTransaction = new ArrayList<Transaction>();
 		
 		try(Connection con = DriverManager.getConnection(url, username, password)){
 
@@ -607,15 +604,14 @@ CustomerAccount[] allOfCustomerAccount = new CustomerAccount[10];
 						Transaction(int transactionNumber, int customerNumber, String customerName, String customerUserName,
 								String transActionType, double transActionAmount)*/
 						
-						int x=0;
-						while((x < 10) && (rs.next())) {
+					
+						while(rs.next()) {
 							
-							allTransaction[x]= new Transaction(rs.getInt("transactionId"), rs.getInt("transactionNumber"),rs.getInt("customerNumber"), 
-									rs.getString("customerName"), rs.getString("customerUserName"), rs.getString("transActionType"), rs.getDouble("transActionAmount"));
+							allTransaction.add(new Transaction(rs.getInt("transactionId"), rs.getInt("transactionNumber"),rs.getInt("customerNumber"), 
+									rs.getString("customerName"), rs.getString("customerUserName"), rs.getString("transActionType"), rs.getDouble("transActionAmount")));
+						
 							
-							
-							x++;
-							
+						
 						}
 						
 

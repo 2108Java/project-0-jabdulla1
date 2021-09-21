@@ -104,15 +104,22 @@ public class Transaction {
 	public void setTransActionAmount(double transActionAmount) {
 		TransActionAmount = transActionAmount;
 	}
+	
+	@Override
+	public String toString() {
+		return "\nTransaction---- \n Transaction Number: " + transactionNumber
+				+ "\n Customer Number: " + customerNumber + "\n Customer Name: " + customerName + ", Customer UserName: "
+				+ customerUserName + "\n Transaction Type: " + transActionType + "\n Transaction Amount: " + TransActionAmount;
+	}
 
-
+/*
 	@Override
 	public String toString() {
 		return "Transaction [transactionId=" + transactionId + ", transactionNumber=" + transactionNumber
 				+ ", customerNumber=" + customerNumber + ", customerName=" + customerName + ", customerUserName="
 				+ customerUserName + ", transActionType=" + transActionType + ", TransActionAmount=" + TransActionAmount
 				+ "]";
-	}
+	}*/
 	
 	
 	

@@ -1,9 +1,11 @@
 package com.revature.view;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.revature.model.AccountTransfer;
@@ -27,9 +29,29 @@ public class ConsoleBankAppImp implements UIBankApp {
 	
 	public ConsoleBankAppImp(BankService bankService){
 		this.service= bankService;
+		
 	}
 	
-	
+private void printList(List customerAccounts) {
+		
+		for(int x =0; x< customerAccounts.size(); x++) {
+			
+			
+			if(customerAccounts.get(x) != null) {
+				System.out.println(customerAccounts.get(x).toString() );
+				
+				/*System.out.println("Id: "+ ToDoArray[x].getId());
+				System.out.println("Title: "+ ToDoArray[x].getTitle());
+				System.out.println("Description:"+ ToDoArray[x].getDescription());
+				System.out.println("Complete: "+ ToDoArray[x].isComplete());
+				System.out.println("");*/
+			}
+		}
+		
+	}
+
+
+
 	private void printArray(CustomerAccount[] customerAccounts) {
 		
 		for(int x =0; x< customerAccounts.length; x++) {
@@ -107,9 +129,10 @@ private void printArray(Transaction[] transaction) {
 			System.out.println("\nWelcome "+ customerLoggedIn.getFirstName() +" "+ customerLoggedIn.getLastName()+" To Bank App Customer Page");
 			
 			System.out.println("View All Accounts");
-			CustomerAccount[] customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
+			//CustomerAccount[] customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
+			List<CustomerAccount> customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
 				
-			printArray(customerAccounts);
+			printList(customerAccounts);
 			
 			
 			System.out.println("1) Make a Deposit");
@@ -138,12 +161,12 @@ private void printArray(Transaction[] transaction) {
 				double damount = Double.parseDouble(sc.nextLine());
 				
 				int x;
-				for( x = 0; x< customerAccounts.length; x++) {//change for error cheacking 
-					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == daccountNumber)&&(customerAccounts[x].isIsapproved() == true)) {
+				for( x = 0; x< customerAccounts.size(); x++) {//change for error cheacking 
+					if((customerAccounts.get(x) != null) &&(customerAccounts.get(x).getAccountNumber() == daccountNumber)&&(customerAccounts.get(x).isIsapproved() == true)) {
 						
 						//damount += customerAccounts[x].getBalance();
 						
-						this.service.MakeDeposit(damount +customerAccounts[x].getBalance(), daccountNumber);
+						this.service.MakeDeposit(damount +customerAccounts.get(x).getBalance(), daccountNumber);
 						
 			
 						
@@ -171,12 +194,12 @@ private void printArray(Transaction[] transaction) {
 				double wamount = Double.parseDouble(sc.nextLine());
 				
 				//x =0;
-				for( x = 0; x< customerAccounts.length; x++) {//change for error cheacking 
-					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == waccountNumber)&&(customerAccounts[x].isIsapproved() == true)) {
+				for( x = 0; x< customerAccounts.size(); x++) {//change for error cheacking 
+					if((customerAccounts.get(x) != null) &&(customerAccounts.get(x).getAccountNumber() == waccountNumber)&&(customerAccounts.get(x).isIsapproved() == true)) {
 						
 						//wamount = customerAccounts[x].getBalance() - wamount;
 						
-						this.service.MakeWithdrawal(waccountNumber, customerAccounts[x].getBalance() - wamount);
+						this.service.MakeWithdrawal(waccountNumber, customerAccounts.get(x).getBalance() - wamount);
 						
 						Transaction withdrawal = new Transaction(new Random().nextInt(100000), this.customerLoggedIn.getCustomerNumber(), 
 								this.customerLoggedIn.getFirstName()+" "+this.customerLoggedIn.getLastName(), this.customerLoggedIn.getUserName(), "WITHDRAWAL", wamount);
@@ -196,7 +219,7 @@ private void printArray(Transaction[] transaction) {
 				System.out.println("See Accounts");
 				customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
 				
-				printArray(customerAccounts);
+				printList(customerAccounts);
 				
 				break;
 				
@@ -252,12 +275,12 @@ private void printArray(Transaction[] transaction) {
 				//lsit all of coustomer acconts and update the coustoer account
 				//AccountTransfer accountTransfer = new AccountTransfer(0,TaccountNumber, startAccountNumber, endAccountNumber, transferAmount, this.customerLoggedIn.getCustomerNumber(), isAccepted);
 				
-				for( x = 0; x< customerAccounts.length; x++) {//change for error cheacking 
-					if((customerAccounts[x] != null) &&(customerAccounts[x].getAccountNumber() == startAccountNumber)&&(customerAccounts[x].isIsapproved() == true)) {
+				for( x = 0; x< customerAccounts.size(); x++) {//change for error cheacking 
+					if((customerAccounts.get(x) != null) &&(customerAccounts.get(x).getAccountNumber() == startAccountNumber)&&(customerAccounts.get(x).isIsapproved() == true)) {
 						
 						//transferAmount = customerAccounts[x].getBalance() - transferAmount;//need error check here
 						
-						this.service.MakeWithdrawal(startAccountNumber, customerAccounts[x].getBalance() - transferAmount);
+						this.service.MakeWithdrawal(startAccountNumber, customerAccounts.get(x).getBalance() - transferAmount);
 						break;
 					}
 				}
@@ -278,8 +301,8 @@ private void printArray(Transaction[] transaction) {
 			case "6":
 				
 				double tAmount=0;
-				AccountTransfer[] AccountTransferisAccepted = this.service.getAllCustomerAccountTransfers(this.customerLoggedIn);
-				printArray(AccountTransferisAccepted);
+				List<AccountTransfer> AccountTransferisAccepted = this.service.getAllCustomerAccountTransfers(this.customerLoggedIn);
+				printList(AccountTransferisAccepted);
 
 				if(AccountTransferisAccepted == null) {
 					break;
@@ -294,16 +317,17 @@ private void printArray(Transaction[] transaction) {
 				String tInput = sc.nextLine();
 
 				if(tInput.equals("1")) {
-					for( x = 0; x< AccountTransferisAccepted.length; x++) {//change for error cheacking 
-						if((AccountTransferisAccepted[x] != null) &&(AccountTransferisAccepted[x].gettAccountNumber() == transferAccountNumber)&&(AccountTransferisAccepted[x].isAccepted() == false)) {
+					for( x = 0; x< AccountTransferisAccepted.size(); x++) {//change for error cheacking 
+						if((AccountTransferisAccepted.get(x) != null) &&(AccountTransferisAccepted.get(x).gettAccountNumber() == transferAccountNumber)&&(AccountTransferisAccepted.get(x).isAccepted() == true)) {
 
 							//amount += AccountTransferisAccepted[x].getTransferAmount();
-							for(int  y = 0; y< customerAccounts.length; y++) {//change for error cheacking 
-								if((customerAccounts[y] != null) &&(customerAccounts[y].getAccountNumber() == AccountTransferisAccepted[x].getEndAccountNumber())&&(customerAccounts[y].isIsapproved() == true)) {
+							for(int  y = 0; y< customerAccounts.size(); y++) {//change for error cheacking 
+								System.out.println("");
+								if((customerAccounts.get(y) != null) &&(customerAccounts.get(y).getAccountNumber() == AccountTransferisAccepted.get(x).getEndAccountNumber())&&(customerAccounts.get(y).isIsapproved() == true)) {
 
-									tAmount = customerAccounts[y].getBalance() + AccountTransferisAccepted[x].getTransferAmount();//need error check here
+									tAmount = customerAccounts.get(y).getBalance() + AccountTransferisAccepted.get(x).getTransferAmount();//need error check here
 
-									this.service.MakeDeposit(tAmount, AccountTransferisAccepted[x].getEndAccountNumber());
+									this.service.MakeDeposit(tAmount, AccountTransferisAccepted.get(x).getEndAccountNumber());
 									this.service.removeAccountTransfer(transferAccountNumber);
 									break;
 								}
@@ -311,16 +335,16 @@ private void printArray(Transaction[] transaction) {
 
 						}//end of if
 						else if(tInput.equals("2")) {
-							for( x = 0; x< AccountTransferisAccepted.length; x++) {//change for error cheacking 
-								if((AccountTransferisAccepted[x] != null) &&(AccountTransferisAccepted[x].gettAccountNumber() == transferAccountNumber)&&(AccountTransferisAccepted[x].isAccepted() == false)) {
+							for( x = 0; x< AccountTransferisAccepted.size(); x++) {//change for error cheacking 
+								if((AccountTransferisAccepted.get(x) != null) &&(AccountTransferisAccepted.get(x).gettAccountNumber() == transferAccountNumber)&&(AccountTransferisAccepted.get(x).isAccepted() == true)) {
 
 									//amount += AccountTransferisAccepted[x].getTransferAmount();
-									for(int  y = 0; y< customerAccounts.length; y++) {//change for error cheacking 
-										if((customerAccounts[y] != null) &&(customerAccounts[y].getAccountNumber() == AccountTransferisAccepted[x].getEndAccountNumber())&&(customerAccounts[y].isIsapproved() == true)) {
+									for(int  y = 0; y< customerAccounts.size(); y++) {//change for error cheacking 
+										if((customerAccounts.get(y) != null) &&(customerAccounts.get(y).getAccountNumber() == AccountTransferisAccepted.get(x).getEndAccountNumber())&&(customerAccounts.get(y).isIsapproved() == true)) {
 
-											tAmount = customerAccounts[y].getBalance() + AccountTransferisAccepted[x].getTransferAmount();//need error check here
+											tAmount = customerAccounts.get(y).getBalance() + AccountTransferisAccepted.get(x).getTransferAmount();//need error check here
 
-											this.service.MakeDeposit(tAmount, AccountTransferisAccepted[x].getStartAccountNumber());
+											this.service.MakeDeposit(tAmount, AccountTransferisAccepted.get(x).getStartAccountNumber());
 											this.service.removeAccountTransfer(transferAccountNumber);
 											break;
 										}
@@ -406,16 +430,16 @@ private void printArray(Transaction[] transaction) {
 			
 			case "1":
 				System.out.println("\nView All Transactions");
-				Transaction[] transActions = this.service.getAllTransActions();
-				printArray(transActions);
+				List<Transaction> transActions = this.service.getAllTransActions();
+				printList(transActions);
 				
 				loggy.info("employee view of all transactions");
 				
 				break;
 			case "2":
 				System.out.println("\nView All Account");
-				CustomerAccount[] customerAccounts = this.service.getAllCustomerAccounts();
-				printArray(customerAccounts);
+				List<CustomerAccount> customerAccounts = this.service.getAllCustomerAccounts();
+				printList(customerAccounts);
 				
 				System.out.println("Enter Account Number of the Customer: ");
 				int vaccountNumber = Integer.parseInt(sc.nextLine());
@@ -443,8 +467,8 @@ private void printArray(Transaction[] transaction) {
 				break;
 			case "3":
 				System.out.println("\nView Account Balances");
-				CustomerAccount[] customerAccountsB = this.service.getAllCustomerAccounts();
-				printArray(customerAccountsB);
+				ArrayList<CustomerAccount> customerAccountsB = this.service.getAllCustomerAccounts();
+				printList(customerAccountsB);
 				
 				loggy.info("accounts viewed");
 				break;
@@ -634,7 +658,7 @@ private void printArray(Transaction[] transaction) {
 		System.out.println("4) Create Account");
 		System.out.println("5) Exit");
 		*/
-		
+		loggy.setLevel(Level.DEBUG);
 				boolean running = true;
 				Scanner sc = new Scanner(System.in);
 				//BankCustomer customerLoggedIn = null;
