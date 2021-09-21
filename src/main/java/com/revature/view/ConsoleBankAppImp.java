@@ -309,10 +309,9 @@ private void printArray(Transaction[] transaction) {
 				break;
 				
 			case "6":
+								
 				
-				
-				
-				double tAmount=0;
+			
 				List<AccountTransfer> AccountTransferisAccepted = this.service.getAllCustomerAccountTransfers(this.customerLoggedIn);
 				
 				if((AccountTransferisAccepted == null) || (AccountTransferisAccepted.size() <= 0)) {
@@ -361,15 +360,15 @@ private void printArray(Transaction[] transaction) {
 					}
 				}//end of if
 				else if(tInput == 2) {
-							System.out.println("accoutn transfer: "+AccountTransferisAccepted.size());
+						
 							for( x = 0; x< AccountTransferisAccepted.size(); x++) {//change for error cheacking 
-								System.out.println("account start account: "+AccountTransferisAccepted.get(x).getStartAccountNumber());
+						
 								if((AccountTransferisAccepted.get(x) != null) &&
 										(AccountTransferisAccepted.get(x).gettAccountNumber() == transferAccountNumber)) {
 
 									//amount += AccountTransferisAccepted[x].getTransferAmount();
 									for(int  y = 0; y< customerAccounts.size(); y++) {//change for error cheacking 
-										System.out.println("customer Accounts: "+customerAccounts.get(y));
+										
 										if((customerAccounts.get(y) != null) &&
 												(customerAccounts.get(y).getAccountNumber() == AccountTransferisAccepted.get(x).getStartAccountNumber())&&
 												(customerAccounts.get(y).isIsapproved() == true)) {
@@ -668,7 +667,7 @@ private void printArray(Transaction[] transaction) {
 		System.out.println("Enter Customer User Name: ");
 		String userName = sc.nextLine();
 		
-		System.out.println("Enter Coustmer User Password: ");
+		System.out.println("Enter Coustomer User Password: ");
 		String password = sc.nextLine();
 		
 		//this.customerLoggedIn = new BankCustomer(userName, password);
