@@ -17,7 +17,7 @@ import com.revature.model.User;
 import com.revature.service.BankService;
 
 public class ConsoleBankAppImp implements UIBankApp {
-	private static final Logger loggy = Logger.getLogger(ConsoleBankAppImp.class);
+	//private static final Logger loggy = Logger.getLogger(ConsoleBankAppImp.class);
 	
 	private BankService service;
 	
@@ -131,8 +131,7 @@ private void printArray(Transaction[] transaction) {
 			System.out.println("View All Accounts");
 			//CustomerAccount[] customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
 			List<CustomerAccount> customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
-				
-			printList(customerAccounts);
+			
 			
 			
 			System.out.println("1) Make a Deposit");
@@ -175,7 +174,7 @@ private void printArray(Transaction[] transaction) {
 						
 						this.service.addTransAction(deposit);
 						
-						loggy.info("deposit made and transactions logged");
+						//loggy.info("deposit made and transactions logged");
 						
 						break;
 					}
@@ -210,16 +209,27 @@ private void printArray(Transaction[] transaction) {
 					}
 				}
 				
-				loggy.info("withdrawal made and transactions logged");
+				//loggy.info("withdrawal made and transactions logged");
 				
 				break;
 				
 			case "3":
 				
-				System.out.println("See Accounts");
-				customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
 				
-				printList(customerAccounts);
+				
+				//printList(customerAccounts);
+				
+				
+				if((customerAccounts != null)&&(customerAccounts.size() >= 0)) {
+					
+					customerAccounts = this.service.getAllAccountsOfCustomer(this.customerLoggedIn);
+					
+					printList(customerAccounts);
+				}
+				else {
+					System.out.println("No Accounts");
+				}
+							
 				
 				break;
 				
@@ -250,7 +260,7 @@ private void printArray(Transaction[] transaction) {
 				
 				this.service.MakeNewCustomerAccount(new CustomerAccount(new Random().nextInt(100000), accountType, createAmount,0 , false ),  this.customerLoggedIn.getCustomerNumber());
 				
-				loggy.info("new customer account made");
+				//loggy.info("new customer account made");
 								
 				break;
 				
@@ -285,7 +295,7 @@ private void printArray(Transaction[] transaction) {
 					}
 				}
 				
-				AccountTransfer accountTransfer = new AccountTransfer(0,TaccountNumber, startAccountNumber, endAccountNumber, transferAmount, this.customerLoggedIn.getCustomerNumber(), false);
+				AccountTransfer accountTransfer = new AccountTransfer(0,TaccountNumber, startAccountNumber, endAccountNumber, transferAmount, this.customerLoggedIn.getCustomerNumber(), true);
 				
 				this.service.MakeTransfer(accountTransfer);
 				
@@ -294,19 +304,25 @@ private void printArray(Transaction[] transaction) {
 				
 				this.service.addTransAction(transfer);
 				
-				loggy.info("transfer made and transaction made");
+				//loggy.info("transfer made and transaction made");
 				
 				break;
 				
 			case "6":
 				
+				
+				
 				double tAmount=0;
 				List<AccountTransfer> AccountTransferisAccepted = this.service.getAllCustomerAccountTransfers(this.customerLoggedIn);
-				printList(AccountTransferisAccepted);
-
-				if(AccountTransferisAccepted == null) {
+				
+				if((AccountTransferisAccepted == null) || (AccountTransferisAccepted.size() <= 0)) {
+					System.out.println("No Transfers");
 					break;
 				}
+				
+				printList(AccountTransferisAccepted);
+
+				
 
 				System.out.println("Select a Transfer number use tAccountNumber: ");
 				int transferAccountNumber = Integer.parseInt(sc.nextLine());
@@ -314,37 +330,53 @@ private void printArray(Transaction[] transaction) {
 				System.out.println("Do you want to accept or deny a transfer: ");
 				System.out.println("1) To accept");
 				System.out.println("2) To deny");
-				String tInput = sc.nextLine();
-
-				if(tInput.equals("1")) {
+				
+				int tInput = Integer.parseInt(sc.nextLine());
+				
+				
+				
+				
+				if(tInput == 1) {
 					for( x = 0; x< AccountTransferisAccepted.size(); x++) {//change for error cheacking 
-						if((AccountTransferisAccepted.get(x) != null) &&(AccountTransferisAccepted.get(x).gettAccountNumber() == transferAccountNumber)&&(AccountTransferisAccepted.get(x).isAccepted() == true)) {
+						if((AccountTransferisAccepted.get(x) != null) &&
+								(AccountTransferisAccepted.get(x).gettAccountNumber() == transferAccountNumber)&&
+								(AccountTransferisAccepted.get(x).isAccepted() == true)) {
 
 							//amount += AccountTransferisAccepted[x].getTransferAmount();
 							for(int  y = 0; y< customerAccounts.size(); y++) {//change for error cheacking 
-								System.out.println("");
-								if((customerAccounts.get(y) != null) &&(customerAccounts.get(y).getAccountNumber() == AccountTransferisAccepted.get(x).getEndAccountNumber())&&(customerAccounts.get(y).isIsapproved() == true)) {
+							
+								if((customerAccounts.get(y) != null) &&
+										(customerAccounts.get(y).getAccountNumber() == AccountTransferisAccepted.get(x).getEndAccountNumber())&&
+										(customerAccounts.get(y).isIsapproved() == true)) {
 
-									tAmount = customerAccounts.get(y).getBalance() + AccountTransferisAccepted.get(x).getTransferAmount();//need error check here
-
-									this.service.MakeDeposit(tAmount, AccountTransferisAccepted.get(x).getEndAccountNumber());
+									double tAmountA = customerAccounts.get(y).getBalance() + AccountTransferisAccepted.get(x).getTransferAmount();//need error check here
+									
+									this.service.MakeDeposit(tAmountA, AccountTransferisAccepted.get(x).getEndAccountNumber());
 									this.service.removeAccountTransfer(transferAccountNumber);
 									break;
 								}
 							}
 
-						}//end of if
-						else if(tInput.equals("2")) {
+						}
+					}
+				}//end of if
+				else if(tInput == 2) {
+							System.out.println("accoutn transfer: "+AccountTransferisAccepted.size());
 							for( x = 0; x< AccountTransferisAccepted.size(); x++) {//change for error cheacking 
-								if((AccountTransferisAccepted.get(x) != null) &&(AccountTransferisAccepted.get(x).gettAccountNumber() == transferAccountNumber)&&(AccountTransferisAccepted.get(x).isAccepted() == true)) {
+								System.out.println("account start account: "+AccountTransferisAccepted.get(x).getStartAccountNumber());
+								if((AccountTransferisAccepted.get(x) != null) &&
+										(AccountTransferisAccepted.get(x).gettAccountNumber() == transferAccountNumber)) {
 
 									//amount += AccountTransferisAccepted[x].getTransferAmount();
 									for(int  y = 0; y< customerAccounts.size(); y++) {//change for error cheacking 
-										if((customerAccounts.get(y) != null) &&(customerAccounts.get(y).getAccountNumber() == AccountTransferisAccepted.get(x).getEndAccountNumber())&&(customerAccounts.get(y).isIsapproved() == true)) {
+										System.out.println("customer Accounts: "+customerAccounts.get(y));
+										if((customerAccounts.get(y) != null) &&
+												(customerAccounts.get(y).getAccountNumber() == AccountTransferisAccepted.get(x).getStartAccountNumber())&&
+												(customerAccounts.get(y).isIsapproved() == true)) {
 
-											tAmount = customerAccounts.get(y).getBalance() + AccountTransferisAccepted.get(x).getTransferAmount();//need error check here
+											double tAmountB = customerAccounts.get(y).getBalance() + AccountTransferisAccepted.get(x).getTransferAmount();//need error check here
 
-											this.service.MakeDeposit(tAmount, AccountTransferisAccepted.get(x).getStartAccountNumber());
+											this.service.MakeDeposit(tAmountB, AccountTransferisAccepted.get(x).getStartAccountNumber());
 											this.service.removeAccountTransfer(transferAccountNumber);
 											break;
 										}
@@ -360,10 +392,10 @@ private void printArray(Transaction[] transaction) {
 						//this.service.MakeDeposit(AccountTransferisAccepted[x].getTransferAmount(), AccountTransferisAccepted[x].getEndAccountNumber());
 						//this.service.removeAccountTransfer(transferAccountNumber);
 						break;
-					}
-				}
-				loggy.info("transfer accepted or deny");
-				break;
+					
+				
+				//loggy.info("transfer accepted or deny");
+				//break;
 				//this.service.AcceptMoneyTransfer(transferAccountNumber, this.customerLoggedIn.getCustomerNumber());
 				
 			case "7":
@@ -431,15 +463,26 @@ private void printArray(Transaction[] transaction) {
 			case "1":
 				System.out.println("\nView All Transactions");
 				List<Transaction> transActions = this.service.getAllTransActions();
-				printList(transActions);
-				
-				loggy.info("employee view of all transactions");
+				if((transActions != null )&& (transActions.size() >= 0)) {
+					printList(transActions);
+					//loggy.info("employee view of all transactions");
+					
+				}
+				else {
+					System.out.println("No Transactions");
+				}
 				
 				break;
 			case "2":
 				System.out.println("\nView All Account");
 				List<CustomerAccount> customerAccounts = this.service.getAllCustomerAccounts();
-				printList(customerAccounts);
+				
+				if(customerAccounts != null && customerAccounts.size() >= 0) {
+					printList(customerAccounts);
+				}
+				else {
+					System.out.println("No Customers");
+				}
 				
 				System.out.println("Enter Account Number of the Customer: ");
 				int vaccountNumber = Integer.parseInt(sc.nextLine());
@@ -462,15 +505,24 @@ private void printArray(Transaction[] transaction) {
 					System.out.println("Wrong Entry");
 				}
 				
-				loggy.info("approval and denial made of accounts");
+				//loggy.info("approval and denial made of accounts");
 				
 				break;
 			case "3":
 				System.out.println("\nView Account Balances");
 				ArrayList<CustomerAccount> customerAccountsB = this.service.getAllCustomerAccounts();
-				printList(customerAccountsB);
 				
-				loggy.info("accounts viewed");
+
+				if(customerAccountsB != null && customerAccountsB.size() >= 0) {
+					printList(customerAccountsB);
+				}
+				else {
+					System.out.println("No Customers");
+				}
+				
+				//printList(customerAccountsB);
+				
+				//loggy.info("accounts viewed");
 				break;
 			
 			case "4":
@@ -511,14 +563,14 @@ private void printArray(Transaction[] transaction) {
 
 				this.service.MakeCustomerAccount(bankcustomer);						
 				running = false;
-				loggy.info("bank customer's account created "+bankcustomer.toString());
+				//loggy.info("bank customer's account created "+bankcustomer.toString());
 				
 				break;
 			case "2":
 				BankEmployee bankemployee = DisplayCreateEmployeeAccount(sc);
 				this.service.MakeEmployeeAccount(bankemployee);						
 				running = false;
-				loggy.info("bank employee's account created "+bankemployee.toString());
+				//loggy.info("bank employee's account created "+bankemployee.toString());
 				break;
 
 			case "3":
@@ -594,11 +646,11 @@ private void printArray(Transaction[] transaction) {
 		
 		if(this.loggedIn == 2) {
 			
-			loggy.info("Employee logged in");
+			//loggy.info("Employee logged in");
 			System.out.println(" You are logged in");
 		}
 		else {
-			loggy.warn("Employee failed to log in");
+			//loggy.warn("Employee failed to log in");
 			System.out.println(" You are not logged in");
 		}
 		
@@ -629,11 +681,11 @@ private void printArray(Transaction[] transaction) {
 		this.loggedIn = 1;
 		
 		if(this.loggedIn == 1) {
-			loggy.info("Customer logged in");
+			//loggy.info("Customer logged in");
 			System.out.println(" You are logged in");
 		}
 		else {
-			loggy.info("Customer failed to log in");
+			//loggy.info("Customer failed to log in");
 			System.out.println(" You are not logged in");
 		}
 		
@@ -658,7 +710,7 @@ private void printArray(Transaction[] transaction) {
 		System.out.println("4) Create Account");
 		System.out.println("5) Exit");
 		*/
-		loggy.setLevel(Level.DEBUG);
+		//loggy.setLevel(Level.DEBUG);
 				boolean running = true;
 				Scanner sc = new Scanner(System.in);
 				//BankCustomer customerLoggedIn = null;
@@ -680,12 +732,12 @@ private void printArray(Transaction[] transaction) {
 						this.loggedIn = DisplayCustomerLoginPage(sc);
 						this.loggedIn =1;
 						if(this.loggedIn == 1) {
-							loggy.info("loggedIn cusomer: "+ this.customerLoggedIn.toString());
+							//loggy.info("loggedIn cusomer: "+ this.customerLoggedIn.toString());
 							//System.out.println("loggedIn cusomer: "+ this.customerLoggedIn.toString());
 							this.DisplayCustomerPage(sc);
 						}
 						else {
-							loggy.warn("Customer failed to log in");
+							//loggy.warn("Customer failed to log in");
 							System.out.println("must log in as a Customer");
 						}
 						
@@ -698,12 +750,12 @@ private void printArray(Transaction[] transaction) {
 						//DisplayEmployeeLoginPage(sc);
 						
 						if(this.loggedIn == 2) {
-							loggy.info("loggedIn employee: "+ this.employeeLoggedIn.toString());
+							//loggy.info("loggedIn employee: "+ this.employeeLoggedIn.toString());
 							//System.out.println("loggedIn cusomer: "+ this.customerLoggedIn.toString());
 							this.DisplayEmployeePage(sc);
 						}
 						else {
-							loggy.warn("Employee failed to log in");
+							//loggy.warn("Employee failed to log in");
 							System.out.println("must log in as a Employee");
 						}
 						
@@ -722,7 +774,7 @@ private void printArray(Transaction[] transaction) {
 						break;
 					default:
 						
-						loggy.warn("User (weather employee or customer) is not choose the write options");
+						//loggy.warn("User (weather employee or customer) is not choose the write options");
 						System.out.println("Choose a Vaild Option");
 					
 					}

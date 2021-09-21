@@ -19,7 +19,7 @@ public class BankServiceTest {
 	BankService bs;
 	
 	@Before
-	public void setupCalculator() {
+	public void setupBank() {
 		System.out.println("Setting up a new BankService!");
 		
 		BankDatabase  BankPGDatabase = new PostgreToDoDatabase();
@@ -42,7 +42,7 @@ public class BankServiceTest {
 	}
 	
 	@Test
-	public void testApproveCustomerAccount(int accountNumber) {
+	public void testApproveCustomerAccount() {
 		
 		assertTrue(bs.approveCustomerAccount(11315));
 	}

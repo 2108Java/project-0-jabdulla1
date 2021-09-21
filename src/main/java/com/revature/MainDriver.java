@@ -13,14 +13,14 @@ import com.revature.view.ConsoleBankAppImp;
 
 public class MainDriver {
 
-	public final static Logger loggy = Logger.getLogger(MainDriver.class);
+	//public final static Logger loggy = Logger.getLogger(MainDriver.class);
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		loggy.setLevel(Level.WARN);
+		//loggy.setLevel(Level.WARN);
 		
-		loggy.info("Starting the application");
+		//loggy.info("Starting the application");
 		
 		BankDatabase  BankPGDatabase = new PostgreToDoDatabase();
 		
