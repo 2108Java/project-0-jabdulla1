@@ -125,7 +125,10 @@ private void printArray(Transaction[] transaction) {
 		while(running) {
 			
 			
-			
+			if(this.customerLoggedIn == null) {
+				System.out.println("You are not logged in");
+				break;
+			}
 			System.out.println("\nWelcome "+ customerLoggedIn.getFirstName() +" "+ customerLoggedIn.getLastName()+" To Bank App Customer Page");
 			
 			System.out.println("View All Accounts");
@@ -159,14 +162,20 @@ private void printArray(Transaction[] transaction) {
 				System.out.println("Enter Amount: ");
 				double damount = Double.parseDouble(sc.nextLine());
 				
+				if(damount < 0) {
+					System.out.println("negetive money");
+					break;
+				}
+				
 				int x;
 				for( x = 0; x< customerAccounts.size(); x++) {//change for error cheacking 
 					if((customerAccounts.get(x) != null) &&(customerAccounts.get(x).getAccountNumber() == daccountNumber)&&(customerAccounts.get(x).isIsapproved() == true)) {
 						
 						//damount += customerAccounts[x].getBalance();
 						
-						this.service.MakeDeposit(damount +customerAccounts.get(x).getBalance(), daccountNumber);
-						
+						if(damount +customerAccounts.get(x).getBalance() >= 0) {
+							this.service.MakeDeposit(damount +customerAccounts.get(x).getBalance(), daccountNumber);
+						}
 			
 						
 						Transaction deposit = new Transaction(new Random().nextInt(100000), this.customerLoggedIn.getCustomerNumber(), 
@@ -192,13 +201,20 @@ private void printArray(Transaction[] transaction) {
 				System.out.println("Enter Amount: ");
 				double wamount = Double.parseDouble(sc.nextLine());
 				
+				if(wamount < 0) {
+					System.out.println("negetive money");
+					break;
+				}
+				
 				//x =0;
 				for( x = 0; x< customerAccounts.size(); x++) {//change for error cheacking 
 					if((customerAccounts.get(x) != null) &&(customerAccounts.get(x).getAccountNumber() == waccountNumber)&&(customerAccounts.get(x).isIsapproved() == true)) {
 						
 						//wamount = customerAccounts[x].getBalance() - wamount;
 						
-						this.service.MakeWithdrawal(waccountNumber, customerAccounts.get(x).getBalance() - wamount);
+						if((customerAccounts.get(x).getBalance() - wamount) >= 0) {
+							this.service.MakeWithdrawal(waccountNumber, customerAccounts.get(x).getBalance() - wamount);
+						}
 						
 						Transaction withdrawal = new Transaction(new Random().nextInt(100000), this.customerLoggedIn.getCustomerNumber(), 
 								this.customerLoggedIn.getFirstName()+" "+this.customerLoggedIn.getLastName(), this.customerLoggedIn.getUserName(), "WITHDRAWAL", wamount);
@@ -282,6 +298,11 @@ private void printArray(Transaction[] transaction) {
 				boolean isAccepted = false;
 				int TaccountNumber = new Random().nextInt(100000);
 				
+				if(transferAmount < 0) {
+					System.out.println("negetive money");
+					break;
+				}
+				
 				//lsit all of coustomer acconts and update the coustoer account
 				//AccountTransfer accountTransfer = new AccountTransfer(0,TaccountNumber, startAccountNumber, endAccountNumber, transferAmount, this.customerLoggedIn.getCustomerNumber(), isAccepted);
 				
@@ -290,7 +311,8 @@ private void printArray(Transaction[] transaction) {
 						
 						//transferAmount = customerAccounts[x].getBalance() - transferAmount;//need error check here
 						
-						this.service.MakeWithdrawal(startAccountNumber, customerAccounts.get(x).getBalance() - transferAmount);
+							this.service.MakeWithdrawal(startAccountNumber, customerAccounts.get(x).getBalance() - transferAmount);
+						
 						break;
 					}
 				}
@@ -442,6 +464,11 @@ private void printArray(Transaction[] transaction) {
 		boolean running = true;
 		
 		while(running) {
+			if(this.employeeLoggedIn == null) {
+				System.out.println("You are not logged in");
+				break;
+				
+			}
 			
 			System.out.println("\nWelcome "+this.employeeLoggedIn.getFirstName()+" "+this.employeeLoggedIn.getLastName()+" To Bank App Employee Page");
 			System.out.println("1) View a log of all transactions");
@@ -646,11 +673,11 @@ private void printArray(Transaction[] transaction) {
 		if(this.loggedIn == 2) {
 			
 			//loggy.info("Employee logged in");
-			System.out.println(" You are logged in");
+			//System.out.println(" You are logged in");
 		}
 		else {
 			//loggy.warn("Employee failed to log in");
-			System.out.println(" You are not logged in");
+			//System.out.println(" You are not logged in");
 		}
 		
 		//System.out.println("5) Exit");
@@ -677,15 +704,17 @@ private void printArray(Transaction[] transaction) {
 		//this.loggedIn = service.loginCustomer(user, this.customerLoggedIn);
 		
 		this.customerLoggedIn = service.loginCustomer(user);
+		
+		
 		this.loggedIn = 1;
 		
 		if(this.loggedIn == 1) {
 			//loggy.info("Customer logged in");
-			System.out.println(" You are logged in");
+			//System.out.println(" You are logged in");
 		}
 		else {
 			//loggy.info("Customer failed to log in");
-			System.out.println(" You are not logged in");
+			//System.out.println(" You are not logged in");
 		}
 		
 		//System.out.println("5) Exit");

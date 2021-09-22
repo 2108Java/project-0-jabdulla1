@@ -46,12 +46,14 @@ public class PostgreToDoDatabase implements BankDatabase {
 			ps.execute();
 			
 			
-			
+		ps.close();
+		con.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 		isCustomerInserted = true;
 		
@@ -77,11 +79,11 @@ public class PostgreToDoDatabase implements BankDatabase {
 			
 			ResultSet rs = ps.executeQuery();
 			
-			rs.next();
+			//rs.next();
 			
 //			BankCustomer(int id, String userName, String password, int customerNumber, String firstName, String lastName) {
 			
-			if(rs != null) {
+			if(rs.next()) {
 				customerLoggedIn= new BankCustomer(rs.getInt("customer_id"), rs.getString("customer_userName"), rs.getString("customer_userPassword"),
 						rs.getInt("customer_number"), rs.getString("customer_firstName"), rs.getString("customer_lastName"));
 				loggedIn = 1;
@@ -91,8 +93,9 @@ public class PostgreToDoDatabase implements BankDatabase {
 				
 			}
 			
-
-
+			rs.close();                         
+			ps.close();
+			con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -143,13 +146,15 @@ public class PostgreToDoDatabase implements BankDatabase {
 							
 						}
 						
-
+						rs.close();
+						ps.close();
+						con.close();	
+						
 
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
 		
 		return allOfCustomer;
 	}
@@ -178,6 +183,9 @@ public class PostgreToDoDatabase implements BankDatabase {
 			
 			ps.execute();
 			
+			
+			ps.close();
+			con.close();	
 			
 
 		} catch (SQLException e) {
@@ -230,6 +238,10 @@ public class PostgreToDoDatabase implements BankDatabase {
 			
 			ps.execute();
 			
+			
+			ps.close();
+			con.close();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -257,11 +269,11 @@ public class PostgreToDoDatabase implements BankDatabase {
 			
 			ResultSet rs = ps.executeQuery();
 			
-			rs.next();
+			//rs.next();
 			
 //			BankCustomer(int id, String userName, String password, int customerNumber, String firstName, String lastName) {
 			
-			if(rs != null) {
+			if(rs.next()) {
 				employeeLoggedIn= new BankEmployee(rs.getInt("employee_id"), rs.getString("employee_userName"), rs.getString("employee_userPassword"),
 						rs.getInt("employee_number"), rs.getString("employee_firstName"), rs.getString("employee_lastName"));
 				loggedIn = 2;
@@ -272,7 +284,10 @@ public class PostgreToDoDatabase implements BankDatabase {
 			}
 			
 
-
+			rs.close();
+			ps.close();
+			con.close();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -307,6 +322,10 @@ public class PostgreToDoDatabase implements BankDatabase {
 			
 			
 			ps.execute();
+			
+			
+			ps.close();
+			con.close();	
 			
 
 		} catch (SQLException e) {
@@ -361,7 +380,10 @@ ArrayList<CustomerAccount> allOfCustomerAccount = new ArrayList<CustomerAccount>
 						}
 						
 
-
+						rs.close();
+						ps.close();
+						con.close();
+						
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -388,8 +410,10 @@ ArrayList<CustomerAccount> allOfCustomerAccount = new ArrayList<CustomerAccount>
 			
 			ps.execute();
 			
+		
+			ps.close();
+			con.close();
 			
-
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -417,7 +441,10 @@ ArrayList<CustomerAccount> allOfCustomerAccount = new ArrayList<CustomerAccount>
 
 			ps.execute();
 
-
+			
+			ps.close();
+			con.close();
+			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -460,7 +487,10 @@ ArrayList<CustomerAccount> allOfCustomerAccount = new ArrayList<CustomerAccount>
 
 			ps.execute();
 
-
+			
+			ps.close();
+			con.close();
+			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -506,13 +536,17 @@ ArrayList<CustomerAccount> allOfCustomerAccount = new ArrayList<CustomerAccount>
 							
 						}
 						
-
+						
+						rs.close();
+						ps.close();
+						con.close();
 
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+	
+		
 		
 		return allOfCustomerTransfer;
 
@@ -535,7 +569,10 @@ ArrayList<CustomerAccount> allOfCustomerAccount = new ArrayList<CustomerAccount>
 
 			ps.execute();
 
+			
 
+			ps.close();
+			con.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -568,7 +605,10 @@ ArrayList<CustomerAccount> allOfCustomerAccount = new ArrayList<CustomerAccount>
 			ps.execute();
 
 
-
+			
+	
+			ps.close();
+			con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -614,7 +654,10 @@ ArrayList<CustomerAccount> allOfCustomerAccount = new ArrayList<CustomerAccount>
 						
 						}
 						
-
+						
+						rs.close();
+						ps.close();
+						con.close();
 
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
